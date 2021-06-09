@@ -1,18 +1,3 @@
-<?php include __DIR__. '/parts/config.php'; ?>
-<?php
-$pNum = isset( $_GET["productNumber"])? $_GET["productNumber"] : "001";
-$sqlr= "SELECT * FROM `product_detail` LEFT JOIN `category_product_list2` ON `product_detail`.`productNumber` = `category_product_list2`.`productNumber` WHERE `product_detail`.`productNumber` =".$pNum;
-$rowsr = $pdo->query($sqlr)->fetch();
-// isset 三項演算子， 取得網址中的productNumber，若有此值時，則等於ProductNumber，若沒有時則給他值為001；
-// 關聯式資料表:在product_detail資料表中用productNumber欄位match category_product_list的productNumber，以取得整張category_product_list所有欄位;然後Where指定product_detail中的productNumber為變數$pNum;
-// 所以$rowsr此時只會抓到$pNum此列資料
-
-$sqlother="SELECT * FROM `category_product_list2`";
-$rowsother =$pdo->query($sqlother)->fetchAll();
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -429,6 +414,8 @@ $rowsother =$pdo->query($sqlother)->fetchAll();
             margin-left: auto;
         }
 
+
+
         .pictureWrap {
             position: relative;
         }
@@ -550,6 +537,7 @@ $rowsother =$pdo->query($sqlother)->fetchAll();
 
         /* 以下為為你推薦好設計區塊 */
 
+
         .bottomSection {
             padding: 20px 15px;
         }
@@ -562,23 +550,24 @@ $rowsother =$pdo->query($sqlother)->fetchAll();
             fill: #f16c5d;
         }
 
-        .otherPicWrap{
+        .otherPicWrap {
             height: 126.66px;
         }
 
-        .otherPicWrap img{
+        .otherPicWrap img {
             width: 100%;
             height: 100%;
-            object-fit:cover;
+            object-fit: cover;
         }
+
         .bottomPicWrap {
             height: 165px;
         }
 
-        .bottomPicWrap img{
+        .bottomPicWrap img {
             width: 100%;
             height: 100%;
-            object-fit:cover;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -665,86 +654,24 @@ $rowsother =$pdo->query($sqlother)->fetchAll();
                 <div class="mainLeft col-7">
                     <div class="picWrap">
                         <div class="bigpic">
-                            <img id="main-item-photo" class="js-main-item-photo main-photo"
-                                alt=""
-                                src="./img/<?= $rowsr["productPic1"]?>.jpg">
+                            <img id="main-item-photo" class="js-main-item-photo main-photo" alt=""
+                                src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/2/800x0.jpg">
                         </div>
                         <div class="smallpicWrap d-flex justify-content-lg-around">
-<?php
-$indexPic=1;
-for ($pp=0; $pp<6; $pp++){
-    ?>
-    <!-- for迴圈跑6次 -->
-    
-    <?php
-    if ($rowsr["productPic" . $indexPic] != ""){
-        ?>
-        <!-- 如果productPic1~6的欄位中不等於空字串時echo欄位中的值 -->
-        <div class="smallpic">
-            <?php
-        echo '<img src="./img/'. $rowsr["productPic" . $indexPic].'.jpg" >';
-        ?>
-        </div>
-        <?php
-    }
-    
-    
-    $indexPic+=1;
-    ?>
-        <!-- <img src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/2/80x80.jpg"> -->
-
-
-
-
-<!-- <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/4/80x80.jpg"></div> -->
-    <?php
-}
-?>
-
-                            
-                            
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/2/80x80.jpg"></div>
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/4/80x80.jpg"></div>
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/5/80x80.jpg"></div>
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/9/80x80.jpg"></div>
+                            <!-- <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/1/80x80.jpg"></div> -->
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/2/80x80.jpg"></div>
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/6/80x80.jpg"></div>
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/11/80x80.jpg"></div>
+                            <div class="smallpic"><img src="//cdn02.pinkoi.com/product/DEx2XyYQ/10/80x80.jpg"></div>
                         </div>
                         <div class="productDetail">
-                        
-                            
-                        
-                        <div class="productintro section">
-                            <h5>商品介紹</h5> 
-                            <?php
-                             $index = 1;   
-                             foreach (explode(",",$rowsr["introRule"])as $rule){
-                            ?>
-                                <?php
-                                
-                                if($rule === 't'){
-                                    echo "<p>" . $rowsr["productDetail". $index] ."</p>";
-                                }
-                                else{
-                                    // echo $rule;
-                                }
-
-                                if($rule ==='i'){
-                                    // <img src="/img/.   var    ." alt="">
-                                    echo '<img src="./img/'. $rowsr["productDetail" . $index].'.jpg" >';
-                                }
-                                else{
-                                    // echo $rule;
-                                }
-                    
-                                if($rule === 'v'){
-                                    echo '<div class="video">'. $rowsr["productDetail" . $index] . '</div>';
-                                }
-                                else {
-                                    // echo $rule;
-                                }                        
-                    
-                                $index += 1;
-
-                                ?>
-                                <?php    
-                           }
-                           ?> 
-                                <!-- <p>🌸無刻字款均為現貨！！下單1-3天出貨
+                            <div class="productintro section">
+                                <h5>商品介紹</h5>
+                                <p>🌸無刻字款均為現貨！！下單1-3天出貨
                                     我們都會快速出貨～～<br>
                                     棄單買家一律黑單！！！再幫我們注意唷♥️
                                     -<br>
@@ -777,14 +704,9 @@ for ($pp=0; $pp<6; $pp++){
                                     「花」香最明顯的就是茉莉香氛，清爽的橙加上甜甜的花香非常搭配！（女生推薦款！）<br>
                                     鼠尾草與海鹽（透明淡香氛）<br>
                                     - 屬於非常清新的木質調香氛，海鹽這種淡淡的香氛讓人感覺隨時都是剛剛從海岸漫步回來後的舒適感。<br>
-                                    （男女推薦款！）</p> -->
-                               
-                               
-                                </div>
-                           
+                                    （男女推薦款！）</p>
+                            </div>
                         </div>
-                        
-                        
                         <div class="deliveryWrap">
                             <div class="delivery section">
                                 <h5>運費與其他資訊</h5>
@@ -942,7 +864,7 @@ for ($pp=0; $pp<6; $pp++){
                                         </div>
                                     </div>
                                     <div class="pic8080">
-                                        <img loading="lazy" src="./img/<?= $rowsr["productPic1"]?>.jpg">
+                                        <img loading="lazy" src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/80x80.jpg">
                                     </div>
                                 </div>
                                 <div class="eachReview d-flex">
@@ -989,7 +911,7 @@ for ($pp=0; $pp<6; $pp++){
                                         </div>
                                     </div>
                                     <div class="pic8080">
-                                    <img loading="lazy" src="./img/<?= $rowsr["productPic1"]?>.jpg">
+                                        <img loading="lazy" src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/80x80.jpg">
                                     </div>
                                 </div>
                                 <div class="eachReview d-flex">
@@ -1036,7 +958,7 @@ for ($pp=0; $pp<6; $pp++){
                                         </div>
                                     </div>
                                     <div class="pic8080">
-                                    <img loading="lazy" src="./img/<?= $rowsr["productPic1"]?>.jpg">
+                                        <img loading="lazy" src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/80x80.jpg">
                                     </div>
                                 </div>
                                 <div class="eachReview d-flex">
@@ -1083,7 +1005,7 @@ for ($pp=0; $pp<6; $pp++){
                                         </div>
                                     </div>
                                     <div class="pic8080">
-                                    <img loading="lazy" src="./img/<?= $rowsr["productPic1"]?>.jpg">    
+                                        <img loading="lazy" src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/80x80.jpg">
                                     </div>
                                 </div>
                                 <div class="eachReview d-flex">
@@ -1131,7 +1053,7 @@ for ($pp=0; $pp<6; $pp++){
                                         </div>
                                     </div>
                                     <div class="pic8080">
-                                    <img loading="lazy" src="./img/<?= $rowsr["productPic1"]?>.jpg">
+                                        <img loading="lazy" src="//cdn02.pinkoi.com/product/DEx2XyYQ/0/80x80.jpg">
                                     </div>
                                 </div>
                                 <div class="eachReview  viewMoreText d-flex justify-content-center align-items-center">
@@ -1153,65 +1075,19 @@ for ($pp=0; $pp<6; $pp++){
                 <div class="mainRight col-5">
                     <div class="mainRightSection PDPproductDetailCard">
                         <div class="PDPproductName">
-                            <h3>
-                                <?php
-                                echo $rowsr["productName"]
-                                ?>
-                                <!-- 藍黃 永生花夜燈擴香瓶 情人節 乾燥花 浮游花 聖誕節禮物 生日禮 -->
-                            </h3>
+                            <h3>藍黃 永生花夜燈擴香瓶 情人節 乾燥花 浮游花 聖誕節禮物 生日禮</h3>
                         </div>
                         <div class="productPrice d-flex">
                             <div class="salePrice">
-                                <?php
-                                // echo $rowsr["discountPrice"]
-                                ?>
-                                NT$ <span>
-                                <?php
-                                if ($rowsr["discount"] != ""){
-                                    echo $rowsr["discountPrice"];
-                                }
-                                else {
-                                    echo $rowsr["originalPrice"] ;
-                                }
-                               
-                                ?>
-                                    <!-- 530 -->
-                                </span><span>起</span>
+                                NT$ <span>530</span><span>起</span>
                             </div>
-                            
-                            
                             <div class="originalPrice">
-                            
-                                <?php
-
-                                if ($rowsr["discount"]!=""){
-                                    echo '<div class="originalPrice">NT$' .  $rowsr["originalPrice"].'</div>' ;
-                                }
-                                                                
-                                ?>  
-                                
-                            
+                                NT$ <span>756</span>
                             </div>
-                            
                         </div>
                         <div class="discountBar clear-fix">
-                            <?php
-                            
-                            if($rowsr["discount"] != ""){
-                                echo '<div class="percent">' .$rowsr["discount"] . '折</div>';
-                            }
-
-                            ?>
-                            <?php
-                            $rowsrDisNum=intval($rowsr["discountPrice"]);
-                            $rowsrOriNum=intval($rowsr["originalPrice"]);
-
-                            if($rowsr["discount"]!=""){
-                                echo '<div class="save">最多省下NT' . $rowsrOriNum - $rowsrDisNum . '</div>';
-                            }
-                            
-                            ?>
-                            
+                            <div class="percent">7折</div>
+                            <div class="save">最多省下NT$633</div>
                         </div>
                         <!-- <div class="selectWrap d-flex">
                             <div class="col firstSelect "><select name="" id="">
@@ -1264,54 +1140,38 @@ for ($pp=0; $pp<6; $pp++){
                         <h5>商品資訊</h5>
 
                         <div class="MCRfakeTable">
-                            <div class="MCRtablerow">
+                            <div class="MCRtablerow ">
                                 <div class="col-4 leftcolumn">
                                     商品材質
                                 </div>
-                                <div class="col-8 rightcolumn">
-                                <?php
-                                echo $rowsr["material"]
-                                ?>
-                                
-                                <!-- 植物、花 -->
+                                <div class="col-8 rightcolumn material">
+                                    植物、花
                                 </div>
                             </div>
                             <div class="MCRtablerow">
                                 <div class="col-4 leftcolumn">
                                     製造方式
                                 </div>
-                                <div class="col-8 rightcolumn">
-                                <?php
-                                echo $rowsr["madeBy"]
-                                ?>
-                                
-                                <!-- 手工製作 -->
+                                <div class="col-8 rightcolumn madeBy">
+                                    手工製作
                                 </div>
                             </div>
                             <div class="MCRtablerow">
                                 <div class="col-4 leftcolumn">
                                     商品產地
                                 </div>
-                                <div class="col-8 rightcolumn">
-                                <?php
-                                echo $rowsr["madeIn"]
-                                ?>
-                                
-                                <!-- 台灣 -->
+                                <div class="col-8 rightcolumn madeIn">
+                                    台灣
                                 </div>
                             </div>
-
-<?php
-if($rowsr["specialty"]!=""){
-    echo '<div class="MCRtablerow">
-    <div class="col-4 leftcolumn">
-        商品特點
-    </div>
-    <div class="col-8 rightcolumn">' . $rowsr["specialty"]. ' </div>
-    </div>';
-}
-?>
-                              
+                            <div class="MCRtablerow specialtyRow">
+                                <div class="col-4 leftcolumn">
+                                    商品特點
+                                </div>
+                                <div class="col-8 rightcolumn specialty">
+                                    有提供客製服務
+                                </div>
+                            </div>
                             <div class="MCRtablerow">
                                 <div class="col-4 leftcolumn">
                                     庫存
@@ -1334,11 +1194,8 @@ if($rowsr["specialty"]!=""){
                                 <div class="col-4 leftcolumn">
                                     商品摘要
                                 </div>
-                                <div class="col-8 rightcolumn">
-                                <?php
-                                echo $rowsr["productSummery"]
-                                ?>
-                                <!-- /花材/ 永生花材 不凋花花材 -->
+                                <div class="col-8 rightcolumn productSummery">
+                                    /花材/ 永生花材 不凋花花材
                                 </div>
                             </div>
                         </div>
@@ -1348,16 +1205,11 @@ if($rowsr["specialty"]!=""){
                         <h5>關於設計館</h5>
                         <div class="store clear-fix">
                             <div class="imgwrap">
-                                <img src="./img/<?php
-                                echo $rowsr["brandPic"]
-                                ?>.jpg" alt="">
+                                <img src="./imgs/store150x150 yuans flower.jpg" alt="">
                             </div>
                             <div class="storeRight">
                                 <div class="storetitle">
-                                <?php
-                                echo $rowsr["brandName"]
-                                ?>
-                                <!-- Yuans Flower -->
+                                    Yuans Flower
                                 </div>
                                 <div class="storetitledown">
                                     <span><svg width="24" height="24" viewBox="0 0 24 24">
@@ -1365,12 +1217,7 @@ if($rowsr["specialty"]!=""){
                                                 d="M12 2c3.87 0 7 3.13 7 7 0 5.25-7 13-7 13S5 14.25 5 9c0-3.87 3.13-7 7-7zM7 9c0 2.85 2.92 7.21 5 9.88 2.12-2.69 5-7 5-9.88 0-2.76-2.24-5-5-5S7 6.24 7 9zm5 2.5c-1.380712 0-2.5-1.119288-2.5-2.5s1.119288-2.5 2.5-2.5 2.5 1.119288 2.5 2.5-1.119288 2.5-2.5 2.5z">
                                             </path>
                                         </svg></span>
-                                    <span>
-                                    <?php
-                                echo $rowsr["madeIn"]
-                                ?>
-                                    <!-- 台灣 -->
-                                </span>
+                                    <span>台灣</span>
                                     <span><svg width="30" height="30" viewBox="0 0 24 24" class="icon--heart-solid"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -1465,35 +1312,19 @@ if($rowsr["specialty"]!=""){
                                     <path d="M4 10.825L7.709 7 4 3.175 5.142 2 10 7l-4.858 5L4 10.825z"></path>
                                 </svg></div>
 
-<?php
-$indexother=0;
-// 設定變數從第0筆開始
-shuffle($rowsother);
-// shuffle洗牌打亂資料表內所有資料順序
-for($i = 0; $i<3; $i++){
-   ?>
-<!-- 整個要重複的div productCard跑迴圈，，我只要3筆，所以設定i<3，代表第0筆、第1筆、第2筆 -->
                             <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
-                                                                                                                    <?php
-                                             if($rowsother[$i]["freeShipping"]!=""){
-                                                echo '<div class="freeShipping">' .$rowsother[$i]["freeShipping"]. '</div>';
-                                        } 
-                                        ?>
-                                        <!-- 如果$rowsother資料表中的第i筆變數中的freeShipping欄位不等於空字串時，則印出整個freeShipping div，且div中塞$rowsother第i筆資料的freeshipping欄位；若欄位為空字串則不做事，通常不做事則省略寫else -->
-                                        <?php
-                                        if($rowsother[$i]["discount"]!=""){
-                                            echo '<div class="discount">' .$rowsother[$i]["discount"]. '折</div>';
-                                        }
-                                        ?>  
-                                        
+                                        <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            85折
+                                        </div>
                                     </div>
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="img/<?= $rowsother[$i]['productPic1']?>.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="imgs/yuans flower220220/熱賣Morandi莫蘭迪配色大花束 永生花大花束 乾燥花大花束.jpg"
+                                        alt="熱賣Morandi莫蘭迪配色大花束 永生花大花束 乾燥花大花束" loading="lazy" style="">
                                     <div class="favorite">
                                         <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -1504,53 +1335,25 @@ for($i = 0; $i<3; $i++){
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>
-                                    <?php
-                                    echo $rowsother[$i]["productName"];
-                                    ?>
-                                    <!-- 熱賣Morandi莫蘭迪配色大花束 永生花大花束 乾燥花大花束 -->
-                                    </p>
+                                    <p>熱賣Morandi莫蘭迪配色大花束 永生花大花束 乾燥花大花束</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                            
-                                            <div class="storeLink">
-                                            <?php
-                                            echo $rowsother[$i]["brandName"];
-                                            ?>
-                                            <!-- Yuans Flower -->
-                                            </div>
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Yuans Flower</div>
                                         </div>
-                                        
                                         <div class="priceProduct">
-                                        <?php
-                                        if($rowsother[$i]["discountPrice"]!=""){
-                                            echo '<div class="onsale">'.$rowsother[$i]["discountPrice"].'</div>';
-
-                                        }
-                                        else{
-                                            echo '<div class="onsale">'.$rowsother[$i]["originalPrice"].'</div>';   
-                                        }
-                                        ?>
-                                           <?php
-                                           if($rowsother[$i]["discountPrice"]!=""){
-                                               echo '<div class="originalPrice">NT$' .$rowsother[$i]["originalPrice"]. '</div>';
-                                           }
-                                           ?> 
-                                            
+                                            <div class="onsale">3080</div>
+                                            <div class="originalPrice">NT$4400</div>
                                         </div>
-                                        
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
-<?php
-
-$indexother+=1;
-}
-
-?>
-                            <!-- <div class="col-4 productCard">
+                            <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
@@ -1578,22 +1381,62 @@ $indexother+=1;
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                           
+                                            <!-- <span class="ad">廣告．</span> -->
                                             <div class="storeLink">Yuans Flower</div>
                                         </div>
                                         <div class="priceProduct">
                                             <div class="onsale">3080</div>
                                             <div class="originalPrice">NT$4400</div>
                                         </div>
-                                        
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
                                     </div>
                                 </div>
-                            </div> -->
-                            
+                            </div>
+                            <div class="col-4 productCard ">
+                                <div class="pictureWrap">
+                                    <div class="discountAndFreeShippingWrap">
+                                        <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            7折
+                                        </div>
+                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="imgs/yuans flower220220/最美捧花 永生花 乾燥花 結婚禮物 韓式捧花 捧花 手綁花 花束.jpg"
+                                        alt="最美捧花 永生花 乾燥花 結婚禮物 韓式捧花 捧花 手綁花 花束" loading="lazy" style="">
+                                    <div class="favorite">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="productName">
+                                    <p>最美捧花 永生花 乾燥花 結婚禮物 韓式捧花 捧花 手綁花 花束</p>
+                                </div>
+                                <div class="productDetail">
+                                    <div class="store">
+                                        <div class="storeWrap d-flex">
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Yuans Flower</div>
+                                        </div>
+                                        <div class="priceProduct">
+                                            <div class="onsale">4280</div>
+                                            <div class="originalPrice">NT$6114</div>
+                                        </div>
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
 
                     <div class="mainRightSection recommend">
                         <div class="titleWrap d-flex align-items-baseline">
@@ -1610,33 +1453,20 @@ $indexother+=1;
                                     class="icon--arrow-right" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4 10.825L7.709 7 4 3.175 5.142 2 10 7l-4.858 5L4 10.825z"></path>
                                 </svg></div>
-                            <?php
-                            $indexGoodDesign=0;
-                            shuffle($rowsother);
-                            for($d=0; $d<3; $d++){
-                            ?>
-                            
+
                             <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
-                                        <?php
-                                        if($rowsother[$d]["freeShipping"]!=""){
-                                        echo '<div class="freeShipping">' .$rowsother[$d]["freeShipping"]. '</div>';
-                                        }
-                                        ?>
-
-                                        <?php
-                                        if($rowsother[$d]["discount"]!=""){
-                                            echo '<div class="discount">' .$rowsother[$d]["discount"]. '折</div>';
-                                        }
-                                        ?>
-                                        
+                                        <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            85折
+                                        </div>
                                     </div>
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="img/<?= $rowsother[$d]["productPic1"]?>.jpg" loading="lazy"
-                                            style="">
-                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="imgs/yuans flower220220/朵氛禮盒D-乾燥花DIY杯-乾燥花組+精油+可密封玻璃杯200ml附木.jpg"
+                                        alt="朵氛禮盒D-乾燥花DIY杯-乾燥花組+精油+可密封玻璃杯200ml附木" loading="lazy" style="">
                                     <div class="favorite">
                                         <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -1647,32 +1477,17 @@ $indexother+=1;
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p><?= $rowsother[$d]["productName"] ?></p>
+                                    <p>朵氛禮盒D-乾燥花DIY杯-乾燥花組+精油+可密封玻璃杯200ml附木</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                            
-                                            <div class="storeLink">
-                                            <?=$rowsother[$d]["brandName"]?>
-                                            </div>
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Dofen</div>
                                         </div>
                                         <div class="priceProduct">
-                                            <?php
-                                            if($rowsother[$d]["discountPrice"]!=""){
-                                                 echo '<div class="onsale">' .$rowsother[$d]["discountPrice"]. '</div>';
-                                                 
-                                            }
-                                            else{
-                                                echo '<div class="onsale">' .$rowsother[$d]["originalPrice"]. '</div>';   
-                                            }
-                                            ?>
-                                            <?php
-                                            if($rowsother[$d]["discountPrice"]!=""){
-                                                echo '<div class="originalPrice">NT$' .$rowsother[$d]["originalPrice"].'</div>';
-                                            }
-                                            ?>
-                                           
+                                            <div class="onsale">3080</div>
+                                            <div class="originalPrice">NT$4400</div>
                                         </div>
                                         <!-- <div class="addition">
                                             <p>可客製</p>
@@ -1680,12 +1495,48 @@ $indexother+=1;
                                     </div>
                                 </div>
                             </div>
-                            <?php
-
-                            $indexGoodDesign+=1;
-                            }
-                            ?>
-                            <!-- <div class="col-4 productCard ">
+                            <div class="col-4 productCard">
+                                <div class="pictureWrap">
+                                    <div class="discountAndFreeShippingWrap">
+                                        <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            7折
+                                        </div>
+                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="imgs/yuans flower220220/高地野生薰衣草植萃噴霧 酒精乾洗手  空間香氛 港澳台免運.jpg" loading="lazy"
+                                        style="">
+                                    <div class="favorite">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="productName">
+                                    <p>高地野生薰衣草植萃噴霧 75%酒精乾洗手 空間香氛 港澳台免運</p>
+                                </div>
+                                <div class="productDetail">
+                                    <div class="store">
+                                        <div class="storeWrap d-flex">
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">沐時光</div>
+                                        </div>
+                                        <div class="priceProduct">
+                                            <div class="onsale">3080</div>
+                                            <div class="originalPrice">NT$4400</div>
+                                        </div>
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 productCard ">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
@@ -1712,17 +1563,19 @@ $indexother+=1;
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                           
+                                            <!-- <span class="ad">廣告．</span> -->
                                             <div class="storeLink">永德堂</div>
                                         </div>
                                         <div class="priceProduct">
                                             <div class="onsale">450</div>
-                                            
+                                            <!-- <div class="originalPrice">NT$6114</div> -->
                                         </div>
-                                        
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
 
@@ -1742,33 +1595,18 @@ $indexother+=1;
                                     <path d="M4 10.825L7.709 7 4 3.175 5.142 2 10 7l-4.858 5L4 10.825z"></path>
                                 </svg></div>
 
-<?php
-$indexPop=0;
-shuffle($rowsother);
-for($p=0; $p<3; $p++){
-?>
-
                             <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
-                                        
-                                        <?php
-                                        if($rowsother[$p]["freeShipping"]!=""){
-                                        echo '<div class="freeShipping">' .$rowsother[$p]["freeShipping"]. '</div>';
-                                        }
-                                        ?>
-
-                                        <?php
-                                        if($rowsother[$p]["discount"]!=""){
-                                            echo  '<div class="discount">' .$rowsother[$p]["discount"]. '折</div>';
-                                        }
-                                        ?>
-                                       
+                                        <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            85折
+                                        </div>
                                     </div>
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein" src="img/<?= $rowsother[$p]["productPic1"]?>.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
+                                    <img class="img g-lazy-fadein" src="imgs/yuans flower220220/不凋花乾燥花水氧機.jpg"
+                                        alt="不凋花乾燥花水氧機" loading="lazy" style="">
                                     <div class="favorite">
                                         <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -1779,43 +1617,25 @@ for($p=0; $p<3; $p++){
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>
-                                    <?= $rowsother[$p]["productName"]?>
-                                    </p>
+                                    <p>不凋花乾燥花水氧機</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                            
-                                            <div class="storeLink">
-                                            <?= $rowsother[$p]["brandName"]?>
-                                            </div>
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Anita雜作</div>
                                         </div>
                                         <div class="priceProduct">
-                                            <?php
-                                            if($rowsother[$p]["discountPrice"]!=""){
-                                                echo '<div class="onsale">' .$rowsother[$p]["discountPrice"]. '</div>';
-                                            }
-                                            else{
-                                                echo '<div class="onsale">' .$rowsother[$p]["originalPrice"]. '</div>';
-                                            }
-                                            ?>
-                                            <?php
-                                            if($rowsother[$p]["discountPrice"]!=""){
-                                                echo '<div class="originalPrice">NT$' .$rowsother[$p]["originalPrice"]. '</div>';
-                                            }
-                                            ?>
-                                            
+                                            <div class="onsale">2180</div>
+                                            <!-- <div class="originalPrice">NT$4400</div> -->
                                         </div>
-                                       
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
-
-<?php
-}
-?>
-                            <!-- <div class="col-4 productCard">
+                            <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
@@ -1842,18 +1662,60 @@ for($p=0; $p<3; $p++){
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                            
+                                            <!-- <span class="ad">廣告．</span> -->
                                             <div class="storeLink">水先</div>
                                         </div>
                                         <div class="priceProduct">
                                             <div class="onsale">3705</div>
                                             <div class="originalPrice">NT$3900</div>
                                         </div>
-                                        
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
                                     </div>
                                 </div>
-                            </div> -->
-                           
+                            </div>
+                            <div class="col-4 productCard ">
+                                <div class="pictureWrap">
+                                    <div class="discountAndFreeShippingWrap">
+                                        <!-- <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            7折
+                                        </div> -->
+                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="imgs/yuans flower220220/永生花薰香器(乾燥花色系) 香氛 精油 夜燈 永生花  聖誕禮物.jpg"
+                                        alt="永生花薰香器(乾燥花色系) 香氛 精油 夜燈 永生花  聖誕禮物" loading="lazy" style="">
+                                    <div class="favorite">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="productName">
+                                    <p>永生花薰香器(乾燥花色系) 香氛 精油 夜燈 永生花 聖誕禮物</p>
+                                </div>
+                                <div class="productDetail">
+                                    <div class="store">
+                                        <div class="storeWrap d-flex">
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Flora Flower</div>
+                                        </div>
+                                        <div class="priceProduct">
+                                            <div class="onsale">2480</div>
+                                            <!-- <div class="originalPrice">NT$6114</div> -->
+                                        </div>
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1872,31 +1734,19 @@ for($p=0; $p<3; $p++){
                                     class="icon--arrow-right" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4 10.825L7.709 7 4 3.175 5.142 2 10 7l-4.858 5L4 10.825z"></path>
                                 </svg></div>
-                            <?php
-                            $indexSimilar=0;
-                            shuffle($rowsother);
-                            for($ss=0; $ss<3; $ss++){
-                            ?>
 
                             <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
-                                        <?php
-                                        if($rowsother[$ss]["freeShipping"]!=""){
-                                        echo '<div class="freeShipping">' .$rowsother[$ss]["freeShipping"]. '</div>';
-                                        }
-                                        ?>
-                                        <?php
-                                        if($rowsother[$ss]["discount"]!=""){
-                                        echo '<div class="discount">' .$rowsother[$ss]["discount"]. '折</div>';
-                                        }
-                                        ?>                                        
-                                        
+                                        <!-- <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            85折
+                                        </div> -->
                                     </div>
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein" src="img/<?= $rowsother[$ss]["productPic1"]?>.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
+                                    <img class="img g-lazy-fadein" src="imgs/yuans flower220220/新品薰香機禮盒組 薰香機 永生花.jpg"
+                                        alt="新品薰香機禮盒組 薰香機 永生花" loading="lazy" style="">
                                     <div class="favorite">
                                         <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -1907,51 +1757,33 @@ for($p=0; $p<3; $p++){
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>
-                                    <?= $rowsother[$ss]["productName"]?>
-                                    </p>
+                                    <p>新品薰香機禮盒組 薰香機 永生花</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                            <div class="storeLink">
-                                            <?= $rowsother[$ss]["brandName"]?>
-                                            </div>
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Flora Flower</div>
                                         </div>
                                         <div class="priceProduct">
-                                            <?php
-                                            if($rowsother[$ss]["discountPrice"]!=""){
-                                                echo '<div class="onsale">' .$rowsother[$ss]["discountPrice"]. '</div>';
-                                            }
-                                            else{
-                                                echo '<div class="onsale">' .$rowsother[$ss]["originalPrice"]. '</div>';
-                                            }
-                                            ?>
-                                            <?php
-                                            if($rowsother[$ss]["discountPrice"]!=""){
-                                                echo '<div class="originalPrice">NT$' .$rowsother[$ss]["originalPrice"]. '</div>';
-                                            }
-                                            ?>
-                                            
+                                            <div class="onsale">2480</div>
+                                            <!-- <div class="originalPrice">NT$4400</div> -->
                                         </div>
-                                        
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
-
-                            <?php
-                            $indexSimilar+=1;
-                            }
-                            ?>
-                            <!-- <div class="col-4 productCard">
+                            <div class="col-4 productCard">
                                 <div class="pictureWrap">
                                     <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
+                                        <!-- <div class="freeShipping">
                                             免運
                                         </div>
                                         <div class="discount">
                                             95折
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <img class="img g-lazy-fadein"
                                         src="imgs/yuans flower220220/journee溫暖冬日乾燥花束聖誕禮物 聖誕花束 交換禮物 情人節.jpg"
@@ -1971,20 +1803,60 @@ for($p=0; $p<3; $p++){
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
-                                            <span class="ad">廣告．</span>
+                                            <!-- <span class="ad">廣告．</span> -->
                                             <div class="storeLink">journee</div>
                                         </div>
                                         <div class="priceProduct">
                                             <div class="onsale">499</div>
-                                            <div class="originalPrice">NT$3900</div>
+                                            <!-- <div class="originalPrice">NT$3900</div> -->
                                         </div>
-                                        <div class="addition">
+                                        <!-- <div class="addition">
                                             <p>可客製</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
-                            </div> -->
-                            
+                            </div>
+                            <div class="col-4 productCard ">
+                                <div class="pictureWrap">
+                                    <div class="discountAndFreeShippingWrap">
+                                        <!-- <div class="freeShipping">
+                                            免運
+                                        </div>
+                                        <div class="discount">
+                                            7折
+                                        </div> -->
+                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                        alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                                    <div class="favorite">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="productName">
+                                    <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                                </div>
+                                <div class="productDetail">
+                                    <div class="store">
+                                        <div class="storeWrap d-flex">
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">LA FLOR引花入世</div>
+                                        </div>
+                                        <div class="priceProduct">
+                                            <div class="onsale">2300</div>
+                                            <!-- <div class="originalPrice">NT$6114</div> -->
+                                        </div>
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -2007,91 +1879,18 @@ for($p=0; $p<3; $p++){
                 <div class="titleWrap d-flex align-items-baseline">
                     <h5>為你推薦的好設計</h5>
                     <span>廣告</span>
-                    
+                    <!-- <span>1/2</span> -->
                 </div>
                 <div class="PDPproductListWrap d-flex flex-wrap">
-                    <?php
-                    $indexother=0;
-                    shuffle($rowsother);
-                    for($i=0; $i<6; $i++){
-                    ?>
-
                     <div class="col-2 productCard ">
                         <div class="pictureWrap">
                             <div class="discountAndFreeShippingWrap">
-                                <?php
-                                if($rowsother[$i]["freeShipping"]!=""){
-                                    echo '<div class="freeShipping">' .$rowsother[$i]["freeShipping"]. '</div>';
-                                }
-                                ?>
-                                <?php
-                                if($rowsother[$i]["discount"]!=""){
-                                    echo '<div class="discount">' .$rowsother[$i]["discount"]. '折</div>';
-                                }
-                                ?>
-                                
-                            </div>
-                            <div class="bottomPicWrap">
-                                <img class="img g-lazy-fadein" src="img/<?= $rowsother[$i]["productPic1"]?>.jpg"
-                                    alt="" loading="lazy" style="">
-                            </div>
-                            <div class="favorite">
-                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="productName">
-                            <p>
-                            <?= $rowsother[$i]["productName"]?>
-                            </p>
-                        </div>
-                        <div class="productDetail">
-                            <div class="store">
-                                <div class="storeWrap d-flex">
-                                    <div class="storeLink">
-                                    <?= $rowsother[$i]["brandName"]?>
-                                    </div>
-                                </div>
-                                <div class="priceProduct">
-                                    <?php
-                                    if($rowsother[$i]["discountPrice"]!=""){
-                                        echo '<div class="onsale">' .$rowsother[$i]["discountPrice"]. '</div>';
-                                    }
-                                    else{
-                                        echo '<div class="onsale">' .$rowsother[$i]["originalPrice"]. '</div>';
-                                    }
-                                    ?>
-                                    <?php
-                                    if($rowsother[$i]["discountPrice"]!=""){
-                                        echo '<div class="originalPrice">NT$' .$rowsother[$i]["originalPrice"]. '</div>';
-                                    }
-                                    ?>
-                                    
-                                </div>
-                                <!-- <div class="addition">
-                                <p>可客製</p>
-                            </div> -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <?php
-                    $indexother+=1;
-                    }
-                    ?>
-                    <!-- <div class="col-2 productCard ">
-                        <div class="pictureWrap">
-                            <div class="discountAndFreeShippingWrap">
-                                <div class="freeShipping">
+                                <!-- <div class="freeShipping">
                                 免運
                             </div>
                             <div class="discount">
                                 7折
-                            </div>
+                            </div> -->
                             </div>
                             <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
                                 alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
@@ -2110,56 +1909,31 @@ for($p=0; $p<3; $p++){
                         <div class="productDetail">
                             <div class="store">
                                 <div class="storeWrap d-flex">
-                                    <span class="ad">廣告．</span>
+                                    <!-- <span class="ad">廣告．</span> -->
                                     <div class="storeLink">LA FLOR引花入世</div>
                                 </div>
                                 <div class="priceProduct">
                                     <div class="onsale">2300</div>
-                                    <div class="originalPrice">NT$6114</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
                                 </div>
-                                <div class="addition">
+                                <!-- <div class="addition">
                                 <p>可客製</p>
-                            </div>
+                            </div> -->
                             </div>
                         </div>
-                    </div> -->
-
-                </div>
-            </div>
-            <div class="bottomSection mayLike">
-                <div class="titleWrap d-flex align-items-baseline">
-                    <h5>你可能也會喜歡</h5>
-                    <!-- <span>廣告</span> -->
-                    <!-- <span>1/2</span> -->
-                </div>
-                <div class="PDPproductListWrap d-flex flex-wrap">
-                    <?php
-                    $indexother=0;
-                    shuffle($rowsother);
-                    for($m=0; $m<6; $m++){
-                    ?>
-                    
+                    </div>
                     <div class="col-2 productCard ">
                         <div class="pictureWrap">
                             <div class="discountAndFreeShippingWrap">
-                                <?php
-                                if($rowsother[$m]["freeShipping"]!=""){
-                                    echo '<div class="freeShipping">' .$rowsother[$m]["freeShipping"]. '</div>';
-                                }
-                                ?>
-                                <?php
-                                if($rowsother[$m]["discount"]!=""){
-                                    echo '<div class="discount">' .$rowsother[$m]["discount"]. '折</div>';
-                                }
-                                ?>                              
-                                
-                                
+                                <!-- <div class="freeShipping">
+                                免運
                             </div>
-                            <div class="bottomPicWrap">
-                                <img class="img g-lazy-fadein"
-                                    src="img/<?= $rowsother[$m]["productPic1"]?>.jpg"
-                                    alt="" loading="lazy" style="">
+                            <div class="discount">
+                                7折
+                            </div> -->
                             </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
                             <div class="favorite">
                                 <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -2170,33 +1944,17 @@ for($p=0; $p<3; $p++){
                             </div>
                         </div>
                         <div class="productName">
-                            <p>
-                            <?= $rowsother[$m]["productName"]?>
-                            </p>
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
                         </div>
                         <div class="productDetail">
                             <div class="store">
                                 <div class="storeWrap d-flex">
                                     <!-- <span class="ad">廣告．</span> -->
-                                    <div class="storeLink">
-                                    <?= $rowsother[$m]["brandName"]?>
-                                    </div>
+                                    <div class="storeLink">LA FLOR引花入世</div>
                                 </div>
                                 <div class="priceProduct">
-                                    <?php
-                                    if($rowsother[$m]["discountPrice"]!=""){
-                                        echo '<div class="onsale">' .$rowsother[$m]["discountPrice"].'</div>';
-                                    }
-                                    else{
-                                        echo '<div class="onsale">' .$rowsother[$m]["originalPrice"].'</div>';
-                                    }
-                                    ?>
-                                    <?php
-                                    if($rowsother[$m]["discountPrice"]!=""){
-                                        echo '<div class="originalPrice">NT$' .$rowsother[$m]["originalPrice"]. '</div>';
-                                    }
-                                    ?>
-                                    
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
                                 </div>
                                 <!-- <div class="addition">
                                 <p>可客製</p>
@@ -2204,19 +1962,424 @@ for($p=0; $p<3; $p++){
                             </div>
                         </div>
                     </div>
-                    <?php  
-                    $indexother+=1;  
-                    }
-                    ?>
-                    <!-- <div class="col-2 productCard ">
+                    <div class="col-2 productCard ">
                         <div class="pictureWrap">
                             <div class="discountAndFreeShippingWrap">
-                                <div class="freeShipping">
+                                <!-- <div class="freeShipping">
                                 免運
                             </div>
                             <div class="discount">
                                 7折
+                            </div> -->
                             </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein" src="imgs/yuans flower220220/永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花.jpg"
+                                alt="永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生桌花 蜜桃慕斯_韓式永生桌花 開幕升遷桌花</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">LA FLOR引花入世</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2300</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottomSection mayLike">
+                <div class="titleWrap d-flex align-items-baseline">
+                    <h5>你可能也會喜歡</h5>
+                    <!-- <span>廣告</span> -->
+                    <!-- <span>1/2</span> -->
+                </div>
+                <div class="PDPproductListWrap d-flex flex-wrap">
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
                             </div>
                             <img class="img g-lazy-fadein"
                                 src="imgs/yuans flower220220/永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物.jpg"
@@ -2236,20 +2399,224 @@ for($p=0; $p<3; $p++){
                         <div class="productDetail">
                             <div class="store">
                                 <div class="storeWrap d-flex">
-                                    <span class="ad">廣告．</span>
+                                    <!-- <span class="ad">廣告．</span> -->
                                     <div class="storeLink">Flora Flower</div>
                                 </div>
                                 <div class="priceProduct">
                                     <div class="onsale">2480</div>
-                                    <div class="originalPrice">NT$6114</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
                                 </div>
-                                <div class="addition">
+                                <!-- <div class="addition">
                                 <p>可客製</p>
-                            </div>
+                            </div> -->
                             </div>
                         </div>
-                    </div> -->
-
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein"
+                                src="imgs/yuans flower220220/永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物.jpg"
+                                alt="永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">Flora Flower</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2480</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein"
+                                src="imgs/yuans flower220220/永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物.jpg"
+                                alt="永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">Flora Flower</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2480</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein"
+                                src="imgs/yuans flower220220/永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物.jpg"
+                                alt="永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">Flora Flower</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2480</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein"
+                                src="imgs/yuans flower220220/永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物.jpg"
+                                alt="永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">Flora Flower</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2480</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 productCard ">
+                        <div class="pictureWrap">
+                            <div class="discountAndFreeShippingWrap">
+                                <!-- <div class="freeShipping">
+                                免運
+                            </div>
+                            <div class="discount">
+                                7折
+                            </div> -->
+                            </div>
+                            <img class="img g-lazy-fadein"
+                                src="imgs/yuans flower220220/永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物.jpg"
+                                alt="永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物" loading="lazy" style="">
+                            <div class="favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="productName">
+                            <p>永生花薰香器(櫻花粉) 香氛 精油 夜燈 永生花 乾燥花 聖誕禮物</p>
+                        </div>
+                        <div class="productDetail">
+                            <div class="store">
+                                <div class="storeWrap d-flex">
+                                    <!-- <span class="ad">廣告．</span> -->
+                                    <div class="storeLink">Flora Flower</div>
+                                </div>
+                                <div class="priceProduct">
+                                    <div class="onsale">2480</div>
+                                    <!-- <div class="originalPrice">NT$6114</div> -->
+                                </div>
+                                <!-- <div class="addition">
+                                <p>可客製</p>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -2339,6 +2706,183 @@ for($p=0; $p<3; $p++){
                 </div>
             </div>
             <script src="./jquery-3.6.0.js"></script>
+            <script>
+                let productNumber = '008';
+                fetch(`./PINKOI.productDetails_api.php?productNumber=${productNumber}`)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    // fetch以拿取這支api資料，回傳的是一字串，我們將字串改為json格式回傳
+                    .then(function (myJson) {
+                        console.log(myJson);
+                        // 然後回傳的這組json資料我們命名為myJsonDetails
+
+                        const bigpic = document.querySelector('.bigpic');
+                        bigpic.innerHTML =
+                            `
+                            <img id="main-item-photo" class="js-main-item-photo main-photo"
+                                alt=""
+                                src="./img/${myJson.productPic1}.jpg">
+                            `
+                            ;
+
+
+                        for (let i = 0; i < 6; i++) {
+                            const smallpicWrap = document.querySelector('.smallpicWrap');
+                            smallpicWrap.innerHTML =
+                                `
+                            <div class="smallpic"><img src="./img/${myJson.productPic1}.jpg"></div>
+                             `
+                                ;
+                        }
+                        const productDetail = document.querySelector('.productDetail');
+                        productDetail.innerHTML =
+                            `
+                            <div class="productintro section">
+                                <h5>商品介紹</h5>
+                                <p>${myJson.productDetail1}</p>
+                            </div>
+                            `
+                            ;
+
+
+
+
+
+                        const PDPproductName = document.querySelector('.PDPproductName');
+                        PDPproductName.innerHTML =
+                            `
+                            <h3>${myJson.productName}</h3>
+                            `
+                        // ``內的變數用${}表示
+                        const salePrice = document.querySelector('.salePrice');
+                        const discountBar = document.querySelector('.discountBar');
+                        const percent = document.querySelector('.percent');
+                        const save = document.querySelector('.save');
+                        const originalPrice = document.querySelector('.originalPrice');
+                        const saveMoney = parseInt(myJson.originalPrice) - parseInt(myJson.discountPrice);
+
+                        if (myJson.discountPrice != "") {
+                            salePrice.innerHTML =
+                                `
+                                NT$${myJson.discountPrice}
+                                `;
+                            discountBar.innerHTML =
+                                `
+                                <div class="percent">${myJson.discount}折</div>
+                                <div class="save">最多省下NT$${saveMoney}</div>
+                                `;
+                            originalPrice.innerHTML =
+                                `
+                                NT$${myJson.originalPrice}
+                                `;
+
+                        }
+                        else {
+                            salePrice.innerHTML =
+                                `
+                                NT$${myJson.originalPrice}
+                                `;
+                            discountBar.outerHTML = "";
+                            originalPrice.outerHTML = ``;
+                        }
+
+                        const material = document.querySelector('.material');
+                        material.innerHTML = myJson.material;
+
+                        const madeBy = document.querySelector('.madeBy');
+                        madeBy.innerHTML = myJson.madeBy;
+
+                        const madeIn = document.querySelector('.madeIn');
+                        madeIn.innerHTML = myJson.madeIn;
+
+                        const specialty = document.querySelector('.specialty');
+                        const specialtyRow = document.querySelector('.specialtyRow')
+                        if (myJson.specialty != "") {
+                            specialty.innerHTML = myJson.specialty;
+                        }
+                        else {
+                            specialtyRow.outerHTML = ""
+                        }
+
+                        const productSummery = document.querySelector('.productSummery');
+                        productSummery.innerHTML = myJson.productSummery;
+
+
+
+                        var el = document.querySelectorAll('.pic8080');
+                        for (var i = 0; i < el.length; i++) {
+                            el[i].innerHTML =
+                                `
+                                <img loading="lazy" src="./img/${myJson.productPic1}.jpg">
+                                `;
+                        }
+
+
+                    });
+
+                fetch(`./PINKOI.productDetails_api.rowsother.php`)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    // fetch以拿取這支api資料，回傳的是一字串，我們將字串改為json格式回傳
+                    .then(function (myJson) {
+                        console.log(myJson);
+
+                        // 然後回傳的這組json資料我們命名為myJsonDetails
+
+                        const productCard = document.querySelector('.productCard');
+
+
+                        productCard.innerHTML =
+
+                            `
+                <div class="pictureWrap">
+                                    <div class="discountAndFreeShippingWrap">
+                                        <div class="freeShipping">
+                                            
+                                        </div>
+                                        <div class="discount">
+                                            折
+                                        </div>
+                                    </div>
+                                    <img class="img g-lazy-fadein"
+                                        src="./img/${myJson[8].productPic1}.jpg"
+                                        alt="熱賣Morandi莫蘭迪配色大花束 永生花大花束 乾燥花大花束" loading="lazy" style="">
+                                    <div class="favorite">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="productName">
+                                    <p>熱賣Morandi莫蘭迪配色大花束 永生花大花束 乾燥花大花束</p>
+                                </div>
+                                <div class="productDetail">
+                                    <div class="store">
+                                        <div class="storeWrap d-flex">
+                                            <!-- <span class="ad">廣告．</span> -->
+                                            <div class="storeLink">Yuans Flower</div>
+                                        </div>
+                                        <div class="priceProduct">
+                                            <div class="onsale">3080</div>
+                                            <div class="originalPrice">NT$4400</div>
+                                        </div>
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
+                                    </div>
+                                </div>
+                `;
+
+                    });
+
+
+
+            </script>
 
 </body>
 

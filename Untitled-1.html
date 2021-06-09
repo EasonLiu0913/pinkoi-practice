@@ -1,0 +1,48 @@
+<div class="pictureWrap">
+    <div class="discountAndFreeShippingWrap" id="discountAndFreeShippingWrap">
+        <div class="discount" id="discount">
+            ${myJson[i].discount}折
+        </div>
+        <div class="freeShipping" id="freeShipping">
+            ${myJson[i].freeShipping}
+        </div>
+    </div>
+    <div class="productimg">
+        <img class="img g-lazy-fadein" src="./img/${myJson[i].productPic1}.jpg" alt="" loading="lazy" style="">
+    </div>
+    <div class="favorite">
+        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+            </path>
+        </svg>
+    </div>
+</div>
+
+<div class="productName">
+    <p>${myJson[i].productName}</p>
+</div>
+
+<div class="productDetail">
+    <div class="store">
+        <div class="storeWrap d-flex">
+            <div class="storeLink">
+                ${myJson[i].brandName}
+            </div>
+        </div>
+        <div class="priceProduct">
+            <div class="onsale">
+                ${myJson[i].discountPrice}
+            </div>
+            <div class="originalPrice">NT$
+                ${myJson[i].originalPrice}
+            </div>
+        </div>
+        <div class="addition">
+            <p>
+                ${myJson[i].mark}
+            </p>
+        </div>
+    </div>
+</div>
+`

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test api</title>
+</head>
+
+<body>
+
+    <div class="card-wrap">
+        <div class="card">
+            <div class="img-wrap">
+                <img src="" alt="">
+            </div>
+
+            <h3 class="pName">productName</h3>
+            <p class="pPrice"> p price</p>
+        </div>
+
+
+    </div>
+
+
+    <script>
+        // ajax
+        // async 非同步 javascript and XML (以前的資料格式，但是現在已經被 JSON 格式取代了)
+
+        // 1.Fetch (原生的JS 最新寫法)
+
+        fetch('./PINKOI.productList_api.php')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                console.log(myJson);
+
+                const pName = document.querySelector('.pName');
+                const pPrice = document.querySelector('.pPrice');
+
+                // 字串相加
+                // pName.innerHTML = 'ABC' + myJson[0].productName;
+
+                // 模板字串
+                pName.innerHTML = `<span>${myJson[0].productName}</span>`;
+                pName.style.color = 'red';
+                pName.style.fontSize = '5rem';
+
+                // 字串相加寫法
+                // pPrice.innerHTML = 'NT$' + myJson[0].originalPrice + "元";
+
+                // 模板字串
+                pPrice.innerHTML = `NT$${myJson[0].originalPrice}元`;
+                pPrice.style.fontSize = '3rem';
+                pPrice.style.fontWeight = 'bold';
+
+                const cardWrap = document.querySelector('.card-wrap');
+
+
+                const div = document.createElement('div');
+                div.classList.add('card');
+                div.innerHTML = `
+                    <div class="img-wrap">
+                        <img src="" alt="">
+                    </div>
+
+                    <h3 class="pName"> ${myJson[1].productName}</h3>
+                    <p class="pPrice">NT$${myJson[1].originalPrice}元</p>
+                `;
+
+                cardWrap.append(div);
+
+
+                const div2 = document.createElement('div');
+                div2.classList.add('card');
+                div2.innerHTML = `
+                <div class="img-wrap">
+                        <img src="" alt="">
+                    </div>
+
+                    <h3 class="pName"> ${myJson[2].productName}</h3>
+                    <p class="pPrice">NT$${myJson[2].originalPrice}元</p>
+                `
+                cardWrap.append(div2);
+
+                for (let i = 0; i < myJson.length; i++) {
+                    console.log(myJson[i].productName);
+                    const div2 = document.createElement('div');
+                    div2.classList.add('card');
+                    div2.innerHTML = `
+                <div class="img-wrap">
+                        <img src="" alt="">
+                    </div>
+
+                    <h3 class="pName"> ${myJson[i].productName}</h3>
+                    <p class="pPrice">NT$${myJson[i].originalPrice}元</p>
+                `
+                    cardWrap.append(div2);
+                }
+
+            });
+
+        // 2.Axios (套件)
+
+        // 3.jQuery
+
+        // 4.XmlHttpRequest (原生的JS 舊寫法)
+    </script>
+</body>
+
+</html>
