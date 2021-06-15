@@ -1749,6 +1749,10 @@
                             ;
 
                         //Q:以下成功跑出6張圖片，但是要如何讓他每一個圖片自動抓到productPic1、productPic2、productPic3、productPic4、productPic5、productPic6的欄位資料? 
+
+                        // A:${myJson[productPic + s]}
+
+
                         for (let s = 0; s < 6; s++) {
 
                             let smallpicWrap = document.querySelector('.smallpicWrap');
@@ -1757,7 +1761,7 @@
 
                             smallpic.innerHTML =
                                 `
-                            <img src="./img/${myJson.productPic1}.jpg">
+                            <img src="./img/${myJson[productPic + s]}.jpg">
                              `
                                 ;
                             smallpicWrap.append(smallpic);
@@ -1899,8 +1903,8 @@
 
                         // Q:資料要洗牌，但是洗牌，但是不知道要怎麼寫
                         var a = myJson;
-                        var b = shuffle(a);
-                        console.log(b);
+                        // var b = shuffle(a);
+                        // console.log(b);
                         for (let v = 0; v < 3; v++) {
                             let otherProductInStorePDPproductListWrap = document.querySelector('.otherProductInStore .PDPproductListWrap');
 
