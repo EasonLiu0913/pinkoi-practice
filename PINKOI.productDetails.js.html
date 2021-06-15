@@ -1736,7 +1736,7 @@
                     })
                     // fetch以拿取這支api資料，回傳的是一字串，我們將字串改為json格式回傳
                     .then(function (myJson) {
-                        console.log(myJson);
+                        console.log('myJson only 1 data', myJson);
                         // 然後回傳的這組json資料我們命名為myJsonDetails
 
                         const bigpic = document.querySelector('.bigpic');
@@ -1755,13 +1755,14 @@
 
                         for (let s = 0; s < 6; s++) {
 
+                            if (myJson['productPic' + (s + 1)] === '') return;
                             let smallpicWrap = document.querySelector('.smallpicWrap');
                             let smallpic = document.createElement('div');
                             smallpic.classList.add('smallpic');
 
                             smallpic.innerHTML =
                                 `
-                            <img src="./img/${myJson[productPic + s]}.jpg">
+                            <img src="./img/${myJson['productPic' + (s + 1)]}.jpg">
                              `
                                 ;
                             smallpicWrap.append(smallpic);
@@ -1894,7 +1895,7 @@
                     })
                     // fetch以拿取這支api資料，回傳的是一字串，我們將字串改為json格式回傳
                     .then(function (myJson) {
-                        console.log(myJson);
+                        console.log('myJson', myJson);
 
                         // 然後回傳的這組json資料我們命名為myJsonDetails
 
