@@ -1771,28 +1771,34 @@
                         console.log(rulearray);
                         let productDetail = document.querySelector('.productDetail');
 
-                        rulearray.forEach(function (item, f) {
-                            if (f === 't') {
-                                productDetail.innerHTML =
+                        // 1.宣告一個變數myHtml，用來存放迴圈裡面的 HTML 內容總和。
+                        let myHtml = '';
+
+                        // 2.與其叫 f，不如改叫 index 會更明確代表是索引值變數的意思。
+                        rulearray.forEach(function (item, index) {
+                            console.log('item', item);
+                            console.log('index', index);
+                            if (item === 't') {
+                                myHtml +=
                                     `
-                                <div class="productintro section">
-                                 <h5>商品介紹</h5>
-                                    <p>${myJson.productDetail[f]}</p>
-                                </div>
-                                `
+                                    <div class="productintro section">
+                                    <h5>商品介紹</h5>
+                                        <p>${myJson['productDetail' + (index + 1)]}</p>
+                                    </div>
+                                    `
                                     ;
                             }
-                            else if (f === 'i') {
-                                productDetail.innerHTML =
-                                    `<img src="./img/'${myJson.productDetail[f]} '.jpg" >`;
+                            else if (item === 'i') {
+                                myHtml +=
+                                    `<img src="./img/${myJson['productDetail' + (index + 1)]}.jpg" >`;
                             }
-                            else if (f === 'v') {
-                                productDetail.innerHTML =
-                                    `<div class="video">${myJson.productDetail[f]}</div>`;
+                            else if (item === 'v') {
+                                myHtml +=
+                                    `<div class="video">${myJson['productDetail' + (index + 1)]}</div>`;
                             }
                         });
 
-
+                        productDetail.innerHTML = myHtml;
 
                         const PDPproductName = document.querySelector('.PDPproductName');
                         PDPproductName.innerHTML =
