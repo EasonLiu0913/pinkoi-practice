@@ -1903,9 +1903,31 @@
 
 
                         // Q:資料要洗牌，但是洗牌，但是不知道要怎麼寫
+
+                        // A:你這裡使用了一個 function shuffle(a)，但是卻沒有這個 function。
+                        // 所以答案是：需要加一個 function shuffle() 
+
+                        function shuffle(array) {
+                            var currentIndex = array.length, randomIndex;
+
+                            // While there remain elements to shuffle...
+                            while (0 !== currentIndex) {
+
+                                // Pick a remaining element...
+                                randomIndex = Math.floor(Math.random() * currentIndex);
+                                currentIndex--;
+
+                                // And swap it with the current element.
+                                [array[currentIndex], array[randomIndex]] = [
+                                    array[randomIndex], array[currentIndex]];
+                            }
+
+                            return array;
+                        }
+
                         var a = myJson;
-                        // var b = shuffle(a);
-                        // console.log(b);
+                        var b = shuffle(a);
+                        console.log(b);
                         for (let v = 0; v < 3; v++) {
                             let otherProductInStorePDPproductListWrap = document.querySelector('.otherProductInStore .PDPproductListWrap');
 
@@ -1915,40 +1937,40 @@
 
 
                             let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${b[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                             </div>
                             `;
                             }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${b[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
                             }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                                         
                             </div>
@@ -1960,15 +1982,15 @@
                             }
 
                             let str2other = "";
-                            if (myJson[v].discount != "") {
+                            if (b[v].discount != "") {
                                 str2other =
                                     `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${b[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
                                 </div>
                             `;
@@ -1978,7 +2000,7 @@
                                     `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
 
                                 </div>
@@ -1991,7 +2013,7 @@
                                     ${str1other}
                                     <div class="otherPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${b[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -2004,13 +2026,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${b[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${b[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
@@ -2022,6 +2044,8 @@
 
                         };
 
+                        b = shuffle(a);
+                        console.log(b);
 
                         for (let v = 0; v < 3; v++) {
                             let recommendPDPproductListWrap = document.querySelector('.recommend .PDPproductListWrap');
@@ -2032,40 +2056,40 @@
 
 
                             let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${b[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                             </div>
                             `;
                             }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${b[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
                             }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                                         
                             </div>
@@ -2077,15 +2101,15 @@
                             }
 
                             let str2other = "";
-                            if (myJson[v].discount != "") {
+                            if (b[v].discount != "") {
                                 str2other =
                                     `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${b[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
                                 </div>
                             `;
@@ -2095,7 +2119,7 @@
                                     `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
 
                                 </div>
@@ -2108,7 +2132,7 @@
                                     ${str1other}
                                     <div class="otherPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${b[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -2121,13 +2145,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${b[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${b[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
@@ -2139,6 +2163,8 @@
 
                         };
 
+                        b = shuffle(a);
+                        console.log(b);
 
                         for (let v = 0; v < 3; v++) {
                             let popularPDPproductListWrap = document.querySelector('.popular .PDPproductListWrap');
@@ -2149,40 +2175,40 @@
 
 
                             let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${b[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                             </div>
                             `;
                             }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${b[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
                             }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                                         
                             </div>
@@ -2194,15 +2220,15 @@
                             }
 
                             let str2other = "";
-                            if (myJson[v].discount != "") {
+                            if (b[v].discount != "") {
                                 str2other =
                                     `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${b[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
                                 </div>
                             `;
@@ -2212,7 +2238,7 @@
                                     `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
 
                                 </div>
@@ -2225,7 +2251,7 @@
                                     ${str1other}
                                     <div class="otherPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${b[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -2238,13 +2264,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${b[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${b[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
@@ -2256,6 +2282,9 @@
 
                         };
 
+                        b = shuffle(a);
+                        console.log(b);
+
                         for (let v = 0; v < 3; v++) {
                             let similarPDPproductListWrap = document.querySelector('.similar .PDPproductListWrap');
 
@@ -2265,40 +2294,40 @@
 
 
                             let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${b[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                             </div>
                             `;
                             }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${b[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
                             }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                                         
                             </div>
@@ -2310,15 +2339,15 @@
                             }
 
                             let str2other = "";
-                            if (myJson[v].discount != "") {
+                            if (b[v].discount != "") {
                                 str2other =
                                     `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${b[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
                                 </div>
                             `;
@@ -2328,7 +2357,7 @@
                                     `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
 
                                 </div>
@@ -2341,7 +2370,7 @@
                                     ${str1other}
                                     <div class="otherPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${b[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -2354,13 +2383,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${b[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${b[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
@@ -2372,6 +2401,9 @@
 
                         };
 
+                        b = shuffle(a);
+                        console.log(b);
+
                         for (let v = 0; v < 12; v++) {
                             let goodDesignPDPproductListWrap = document.querySelector('.goodDesign .PDPproductListWrap');
 
@@ -2381,40 +2413,40 @@
 
 
                             let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${b[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                             </div>
                             `;
                             }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${b[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
                             }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                                         
                             </div>
@@ -2426,15 +2458,15 @@
                             }
 
                             let str2other = "";
-                            if (myJson[v].discount != "") {
+                            if (b[v].discount != "") {
                                 str2other =
                                     `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${b[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
                                 </div>
                             `;
@@ -2444,7 +2476,7 @@
                                     `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
 
                                 </div>
@@ -2457,7 +2489,7 @@
                                     ${str1other}
                                     <div class="bottomPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${b[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -2470,13 +2502,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${b[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${b[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
@@ -2488,6 +2520,7 @@
 
                         };
 
+                        b = shuffle(a);
 
                         for (let v = 0; v < 12; v++) {
 
@@ -2499,40 +2532,40 @@
 
 
                             let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${b[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                             </div>
                             `;
                             }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${b[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
                             }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
 
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${b[v].freeShipping}
                                         </div>
                                         
                             </div>
@@ -2544,15 +2577,15 @@
                             }
 
                             let str2other = "";
-                            if (myJson[v].discount != "") {
+                            if (b[v].discount != "") {
                                 str2other =
                                     `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${b[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
                                 </div>
                             `;
@@ -2562,7 +2595,7 @@
                                     `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${b[v].originalPrice}
                                     </div>
 
                                 </div>
@@ -2575,7 +2608,7 @@
                                     ${str1other}
                                     <div class="bottomPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${b[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -2588,13 +2621,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${b[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${b[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
