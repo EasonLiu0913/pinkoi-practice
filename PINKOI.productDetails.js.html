@@ -1750,7 +1750,7 @@
 
                         //Q:以下成功跑出6張圖片，但是要如何讓他每一個圖片自動抓到productPic1、productPic2、productPic3、productPic4、productPic5、productPic6的欄位資料? 
 
-                        // A:${myJson[productPic + s]}
+                        // A:<img src="./img/${myJson['productPic' + (s + 1)]}.jpg">
 
 
                         for (let s = 0; s < 6; s++) {
@@ -1907,742 +1907,168 @@
                         // A:你這裡使用了一個 function shuffle(a)，但是卻沒有這個 function。
                         // 所以答案是：需要加一個 function shuffle() 
 
-                        function shuffle(array) {
-                            var currentIndex = array.length, randomIndex;
-
-                            // While there remain elements to shuffle...
-                            while (0 !== currentIndex) {
-
-                                // Pick a remaining element...
-                                randomIndex = Math.floor(Math.random() * currentIndex);
-                                currentIndex--;
-
-                                // And swap it with the current element.
-                                [array[currentIndex], array[randomIndex]] = [
-                                    array[randomIndex], array[currentIndex]];
-                            }
-
-                            return array;
-                        }
-
-                        var a = myJson;
-                        var b = shuffle(a);
-                        console.log(b);
-                        for (let v = 0; v < 3; v++) {
-                            let otherProductInStorePDPproductListWrap = document.querySelector('.otherProductInStore .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${b[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${b[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (b[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${b[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${b[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${b[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${b[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            otherProductInStorePDPproductListWrap.append(productCard);
-
-                        };
-
-                        b = shuffle(a);
-                        console.log(b);
-
-                        for (let v = 0; v < 3; v++) {
-                            let recommendPDPproductListWrap = document.querySelector('.recommend .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${b[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${b[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (b[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${b[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${b[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${b[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${b[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            recommendPDPproductListWrap.append(productCard);
-
-                        };
-
-                        b = shuffle(a);
-                        console.log(b);
-
-                        for (let v = 0; v < 3; v++) {
-                            let popularPDPproductListWrap = document.querySelector('.popular .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${b[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${b[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (b[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${b[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${b[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${b[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${b[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            popularPDPproductListWrap.append(productCard);
-
-                        };
-
-                        b = shuffle(a);
-                        console.log(b);
-
-                        for (let v = 0; v < 3; v++) {
-                            let similarPDPproductListWrap = document.querySelector('.similar .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${b[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${b[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (b[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${b[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${b[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${b[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${b[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            similarPDPproductListWrap.append(productCard);
-
-                        };
-
-                        b = shuffle(a);
-                        console.log(b);
-
-                        for (let v = 0; v < 12; v++) {
-                            let goodDesignPDPproductListWrap = document.querySelector('.goodDesign .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-2');
-
-
-                            let str1other = "";
-                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${b[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${b[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (b[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${b[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="bottomPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${b[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${b[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${b[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            goodDesignPDPproductListWrap.append(productCard);
-
-                        };
-
-                        b = shuffle(a);
-
-                        for (let v = 0; v < 12; v++) {
-
-                            let mayLikePDPproductListWrap = document.querySelector('.mayLike .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-2');
-
-
-                            let str1other = "";
-                            if ((b[v].discount != "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${b[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${b[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${b[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (b[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${b[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${b[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="bottomPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${b[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${b[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${b[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            mayLikePDPproductListWrap.append(productCard);
-                        };
+                        // 你的迴圈裡面太多重複的程式碼，其實可以寫成一個 function createAndAppendData()來執行
+                        // 傳入必要的參數，例如：
+                        // 1.想要 append 在哪一個 classname 的DOM
+                        // 2.資料（myJson）
+                        // 3.要跑幾筆迴圈
+
+                        // 三筆
+                        createAndAppendData('.otherProductInStore .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.recommend .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.popular .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.similar .PDPproductListWrap', myJson, 3);
+                        // 十二筆
+                        createAndAppendData('.goodDesign .PDPproductListWrap', myJson, 12);
+                        createAndAppendData('.mayLike .PDPproductListWrap', myJson, 12);
 
                     });
 
+                function createAndAppendData(classname, data, maxNumber) {
+                    // 拿到 class 名稱，用來選取 DOM 節點
+                    let myDom = document.querySelector(classname);
+
+                    // 把傳來的 myJson 資料打散亂數處理
+                    b = shuffle(data);
+
+                    // 依據資料筆數是 3 或 12，來判斷 col 應該要多少欄。
+                    const myCol = (maxNumber === 3) ? 'col-4' : 'col-2';
+
+                    // 這裡基本上都一樣不用改，只有最底下程式碼 append 的地方改成 myDom.append(productCard);
+                    // 以及 productCard.classList.add(myCol); classname 改成變數 myCol 了。
+                    for (let v = 0; v < maxNumber; v++) {
+
+                        let productCard = document.createElement('div');
+                        productCard.classList.add('productCard');
+
+                        productCard.classList.add(myCol);
 
 
+                        let str1other = "";
+                        if ((b[v].discount != "") && (b[v].freeShipping != "")) {
 
+                            str1other =
+                                `
+                                <div class="discountAndFreeShippingWrap">
+                                        <div class="discount">
+                                            ${b[v].discount}折
+                                        </div>
+                                        <div class="freeShipping">
+                                            ${b[v].freeShipping}
+                                        </div>
+                            </div>
+                            `;
+                        }
+                        else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
+
+                            str1other =
+                                `
+                            <div class="discountAndFreeShippingWrap">
+                            <div class="discount">
+                            ${b[v].discount}折
+                            </div>
+                                        
+                            </div>
+                            `;
+
+                        }
+                        else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
+
+                            str1other =
+                                `
+                            <div class="discountAndFreeShippingWrap">
+                                        <div class="freeShipping">
+                                            ${b[v].freeShipping}
+                                        </div>
+                                        
+                            </div>
+                            `;
+                        }
+                        else {
+
+                            str1other = ""
+                        }
+
+                        let str2other = "";
+                        if (b[v].discount != "") {
+                            str2other =
+                                `
+                                <div class="priceProduct">
+                                    <div class="onsale">
+                                        ${b[v].discountPrice}
+                                    </div>
+                                    <div class="originalPrice">NT$
+                                        ${b[v].originalPrice}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        else {
+                            str2other =
+                                `
+                            <div class="priceProduct">
+                                    <div class="onsale">
+                                        ${b[v].originalPrice}
+                                    </div>
+
+                                </div>
+                            `;
+                        }
+
+                        productCard.innerHTML =
+
+                            `<div class="pictureWrap">
+                                    ${str1other}
+                                    <div class="otherPicWrap">
+                                        <img class="img g-lazy-fadein"
+                                            src="./img/${b[v].productPic1}.jpg"
+                                            alt="" loading="lazy" style="">
+                                    </div>
+                                    <div class="favorite">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="productName">
+                                    <p>${b[v].productName}</p>
+                                </div>
+                                <div class="productDetail">
+                                    <div class="store">
+                                        <div class="storeWrap d-flex">
+                                        <div class="storeLink">
+                                            ${b[v].brandName}</div>
+                                        </div>
+                                       ${str2other}
+                                        <!-- <div class="addition">
+                                            <p>可客製</p>
+                                        </div> -->
+                                    </div>
+                                </div>`;
+                        myDom.append(productCard);
+                    }
+                }
+
+                function shuffle(array) {
+                    var currentIndex = array.length, randomIndex;
+
+                    // While there remain elements to shuffle...
+                    while (0 !== currentIndex) {
+
+                        // Pick a remaining element...
+                        randomIndex = Math.floor(Math.random() * currentIndex);
+                        currentIndex--;
+
+                        // And swap it with the current element.
+                        [array[currentIndex], array[randomIndex]] = [
+                            array[randomIndex], array[currentIndex]];
+                    }
+
+                    return array;
+                }
 
 
             </script>
