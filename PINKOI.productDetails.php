@@ -713,6 +713,7 @@ for ($pp=0; $pp<6; $pp++){
                             <?php
                              $index = 1;   
                              foreach (explode(",",$rowsr["introRule"])as $rule){
+                               
                             ?>
                                 <?php
                                 

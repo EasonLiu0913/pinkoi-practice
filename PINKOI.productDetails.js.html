@@ -1729,7 +1729,7 @@
             </div>
             <script src="./jquery-3.6.0.js"></script>
             <script>
-                let productNumber = '008';
+                let productNumber = '0019';
                 fetch(`./PINKOI.productDetails_api.php?productNumber=${productNumber}`)
                     .then(function (response) {
                         return response.json();
@@ -1748,8 +1748,9 @@
                             `
                             ;
 
-
+                        //Q:以下成功跑出6張圖片，但是要如何讓他每一個圖片自動抓到productPic1、productPic2、productPic3、productPic4、productPic5、productPic6的欄位資料? 
                         for (let s = 0; s < 6; s++) {
+
                             let smallpicWrap = document.querySelector('.smallpicWrap');
                             let smallpic = document.createElement('div');
                             smallpic.classList.add('smallpic');
@@ -1761,17 +1762,35 @@
                                 ;
                             smallpicWrap.append(smallpic);
                         };
-                        const productDetail = document.querySelector('.productDetail');
-                        productDetail.innerHTML =
-                            `
-                            <div class="productintro section">
-                                <h5>商品介紹</h5>
-                                <p>${myJson.productDetail1}</p>
-                            </div>
-                            `
-                            ;
 
+                        // Q:商品簡介的內容，我先把introRule欄位中的字串變成陣列ex:[t,i,i](不知道對不對?)，然後不知道要怎麼叫出productDetail1、productDetail2、productDetail3.....的欄位資料，並結合判斷introRule的陣列內的質，給不同的格式
+                        let introRule = myJson.introRule;
+                        console.log(myJson.introRule)
+                        let rulearray = introRule.split(',');
+                        console.log('split is ok');
+                        console.log(rulearray);
+                        let productDetail = document.querySelector('.productDetail');
 
+                        rulearray.forEach(function (item, f) {
+                            if (f === 't') {
+                                productDetail.innerHTML =
+                                    `
+                                <div class="productintro section">
+                                 <h5>商品介紹</h5>
+                                    <p>${myJson.productDetail[f]}</p>
+                                </div>
+                                `
+                                    ;
+                            }
+                            else if (f === 'i') {
+                                productDetail.innerHTML =
+                                    `<img src="./img/'${myJson.productDetail[f]} '.jpg" >`;
+                            }
+                            else if (f === 'v') {
+                                productDetail.innerHTML =
+                                    `<div class="video">${myJson.productDetail[f]}</div>`;
+                            }
+                        });
 
 
 
@@ -1853,8 +1872,8 @@
                                 `;
                         };
 
-                        let introRule = myJson.introRule;
-                        console.log(myJson.introRule)
+
+
 
 
                     });
@@ -1871,6 +1890,11 @@
 
 
 
+
+                        // Q:資料要洗牌，但是洗牌，但是不知道要怎麼寫
+                        var a = myJson;
+                        var b = shuffle(a);
+                        console.log(b);
                         for (let v = 0; v < 3; v++) {
                             let otherProductInStorePDPproductListWrap = document.querySelector('.otherProductInStore .PDPproductListWrap');
 
@@ -1881,7 +1905,7 @@
 
                             let str1other = "";
                             if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
@@ -1895,7 +1919,7 @@
                             `;
                             }
                             else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -1908,7 +1932,7 @@
 
                             }
                             else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -1920,7 +1944,7 @@
                             `;
                             }
                             else {
-                                console.log('str1other is ok');
+
                                 str1other = ""
                             }
 
@@ -1987,6 +2011,7 @@
 
                         };
 
+
                         for (let v = 0; v < 3; v++) {
                             let recommendPDPproductListWrap = document.querySelector('.recommend .PDPproductListWrap');
 
@@ -1997,7 +2022,7 @@
 
                             let str1other = "";
                             if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
@@ -2011,7 +2036,7 @@
                             `;
                             }
                             else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2024,7 +2049,7 @@
 
                             }
                             else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2036,7 +2061,7 @@
                             `;
                             }
                             else {
-                                console.log('str1other is ok');
+
                                 str1other = ""
                             }
 
@@ -2114,7 +2139,7 @@
 
                             let str1other = "";
                             if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
@@ -2128,7 +2153,7 @@
                             `;
                             }
                             else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2141,7 +2166,7 @@
 
                             }
                             else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2153,7 +2178,7 @@
                             `;
                             }
                             else {
-                                console.log('str1other is ok');
+
                                 str1other = ""
                             }
 
@@ -2230,7 +2255,7 @@
 
                             let str1other = "";
                             if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
@@ -2244,7 +2269,7 @@
                             `;
                             }
                             else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2257,7 +2282,7 @@
 
                             }
                             else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2269,7 +2294,7 @@
                             `;
                             }
                             else {
-                                console.log('str1other is ok');
+
                                 str1other = ""
                             }
 
@@ -2346,7 +2371,7 @@
 
                             let str1other = "";
                             if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
@@ -2360,7 +2385,7 @@
                             `;
                             }
                             else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2373,7 +2398,7 @@
 
                             }
                             else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2385,7 +2410,7 @@
                             `;
                             }
                             else {
-                                console.log('str1other is ok');
+
                                 str1other = ""
                             }
 
@@ -2464,7 +2489,7 @@
 
                             let str1other = "";
                             if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                                 <div class="discountAndFreeShippingWrap">
@@ -2478,7 +2503,7 @@
                             `;
                             }
                             else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2491,7 +2516,7 @@
 
                             }
                             else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-                                console.log('str1other is ok');
+
                                 str1other =
                                     `
                             <div class="discountAndFreeShippingWrap">
@@ -2503,7 +2528,7 @@
                             `;
                             }
                             else {
-                                console.log('str1other is ok');
+
                                 str1other = ""
                             }
 
