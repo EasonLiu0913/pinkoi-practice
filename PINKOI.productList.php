@@ -15,10 +15,17 @@ $rows = $pdo->query($sql)->fetchAll();
     <link rel="stylesheet" href="./bootstrap-4.6.0-dist/css/bootstrap.css">
 
     <style>
+
+
         body {
             margin: 0px auto;
             padding: 0px auto;
             color: #66666a;
+        }
+
+        a:hover, a:visited, a:link, a:active{
+            text-decoration: none;
+            color:#66666a;
         }
 
         .content {
@@ -890,7 +897,8 @@ $rows = $pdo->query($sql)->fetchAll();
                     <?php  
                     foreach($rows as $s){
                         ?>
- <div class="col-3 productCard">
+ <div  class="col-3 productCard" >
+ <a href="PINKOI.productDetails.php?productNumber=<?php echo $s["productNumber"]?>">
 
 <div class="pictureWrap">
 
@@ -992,6 +1000,7 @@ $rows = $pdo->query($sql)->fetchAll();
 <?php
 }
 ?>
+</a>
                    
                     <!-- <div class="col-3 productCard">
                         <div class="pictureWrap">
