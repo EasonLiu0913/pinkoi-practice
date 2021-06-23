@@ -1,6 +1,6 @@
 <?php include __DIR__. '/parts/config.php'; ?>
 <?php
-$sql= "SELECT * FROM `category_product_list1`";
+$sql= "SELECT * FROM `category_product_list2`";
 $rows = $pdo->query($sql)->fetchAll();
 
 ?>
