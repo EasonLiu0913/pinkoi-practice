@@ -1751,7 +1751,7 @@
                         //Q:以下成功跑出6張圖片，但是要如何讓他每一個圖片自動抓到productPic1、productPic2、productPic3、productPic4、productPic5、productPic6的欄位資料? 
                         for (let s = 0; s < 6; s++) {
 
-                            if (myJson['productPic' + (s + 1)] === '') return;
+                            if (myJson['productPic' + (s + 1)] === '') break;
                             let smallpicWrap = document.querySelector('.smallpicWrap');
                             let smallpic = document.createElement('div');
                             smallpic.classList.add('smallpic');
