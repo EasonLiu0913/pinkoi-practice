@@ -672,7 +672,7 @@
                         <div class="productDetail">
                             <div class="productintro section">
                                 <h5>商品介紹</h5>
-                                <p>🌸無刻字款均為現貨！！下單1-3天出貨
+                                <!-- <p>🌸無刻字款均為現貨！！下單1-3天出貨
                                     我們都會快速出貨～～<br>
                                     棄單買家一律黑單！！！再幫我們注意唷♥️
                                     -<br>
@@ -705,7 +705,7 @@
                                     「花」香最明顯的就是茉莉香氛，清爽的橙加上甜甜的花香非常搭配！（女生推薦款！）<br>
                                     鼠尾草與海鹽（透明淡香氛）<br>
                                     - 屬於非常清新的木質調香氛，海鹽這種淡淡的香氛讓人感覺隨時都是剛剛從海岸漫步回來後的舒適感。<br>
-                                    （男女推薦款！）</p>
+                                    （男女推薦款！）</p> -->
                             </div>
                         </div>
                         <div class="deliveryWrap">
@@ -1729,7 +1729,7 @@
             </div>
             <script src="./jquery-3.6.0.js"></script>
             <script>
-                let productNumber = '0019';
+                let productNumber = '0018';
                 fetch(`./PINKOI.productDetails_api.php?productNumber=${productNumber}`)
                     .then(function (response) {
                         return response.json();
@@ -1751,13 +1751,14 @@
                         //Q:以下成功跑出6張圖片，但是要如何讓他每一個圖片自動抓到productPic1、productPic2、productPic3、productPic4、productPic5、productPic6的欄位資料? 
                         for (let s = 0; s < 6; s++) {
 
+                            if (myJson['productPic' + (s + 1)] === '') return;
                             let smallpicWrap = document.querySelector('.smallpicWrap');
                             let smallpic = document.createElement('div');
                             smallpic.classList.add('smallpic');
 
                             smallpic.innerHTML =
                                 `
-                            <img src="./img/${myJson.productPic1}.jpg">
+                            <img src="./img/${myJson['productPic' + (s + 1)]}.jpg">
                              `
                                 ;
                             smallpicWrap.append(smallpic);
@@ -1771,26 +1772,33 @@
                         console.log(rulearray);
                         let productDetail = document.querySelector('.productDetail');
 
-                        rulearray.forEach(function (item, f) {
-                            if (f === 't') {
-                                productDetail.innerHTML =
+                        let myHtml = '';
+
+                        rulearray.forEach(function (item, index) {
+                            console.log('item', item);
+                            console.log('index', index);
+                            if (item === 't') {
+                                myHtml +=
+
                                     `
                                 <div class="productintro section">
                                  <h5>商品介紹</h5>
-                                    <p>${myJson.productDetail[f]}</p>
+                                    <p>${myJson['productDetail' + (index + 1)]}</p>
                                 </div>
                                 `
                                     ;
                             }
-                            else if (f === 'i') {
-                                productDetail.innerHTML =
-                                    `<img src="./img/'${myJson.productDetail[f]} '.jpg" >`;
+                            else if (item === 'i') {
+                                myHtml +=
+                                    `<img src="./img/${myJson['productDetail' + (index + 1)]}.jpg" >`;
                             }
-                            else if (f === 'v') {
-                                productDetail.innerHTML =
-                                    `<div class="video">${myJson.productDetail[f]}</div>`;
+                            else if (item === 'v') {
+                                myHtml +=
+                                    `<div class="video">${myJson['productDetail' + (index + 1)]}</div>`;
                             }
                         });
+
+                        productDetail.innerHTML = myHtml;
 
 
 
@@ -1892,95 +1900,125 @@
 
 
                         // Q:資料要洗牌，但是洗牌，但是不知道要怎麼寫
+                        function shuffle(array) {
+                            var currentIndex = array.length, randomIndex;
+                            while (0 !== currentIndex) {
+                                randomIndex = Math.floor(Math.random() * currentIndex);
+                                currentIndex--;
+
+                                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+                            }
+                            return array;
+                        }
+
                         var a = myJson;
-                        var b = shuffle(a);
-                        console.log(b);
-                        for (let v = 0; v < 3; v++) {
-                            let otherProductInStorePDPproductListWrap = document.querySelector('.otherProductInStore .PDPproductListWrap');
+                        var otherarray = shuffle(a);
+                        console.log(otherarray);
 
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
+                        createAndAppendData('.otherProductInStore .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.recommend .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.popular .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.similar .PDPproductListWrap', myJson, 3);
+                        createAndAppendData('.goodDesign .PDPproductListWrap', myJson, 12);
+                        createAndAppendData('.mayLike .PDPproductListWrap', myJson, 12);
+
+                        function createAndAppendData(classname, data, maxNumber) {
+                            // 拿到class名稱，用來選取DOM節點
+                            let myDOM = document.querySelector(classname);
+                            // 把傳來的myJson資料打散亂數處理
+                            b = shuffle(data);
+
+                            // 依據資料筆數是3或12，來判斷col應該要多少欄。
+                            const myCol = (maxNumber === 3) ? 'col-4' : 'col-2';
 
 
-                            let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
 
-                                str1other =
-                                    `
+                            for (let v = 0; v < maxNumber; v++) {
+                                // let otherProductInStorePDPproductListWrap = document.querySelector('.otherProductInStore .PDPproductListWrap');
+
+                                let productCard = document.createElement('div');
+                                productCard.classList.add('productCard');
+                                productCard.classList.add(myCol);
+
+
+                                let str1other = "";
+                                if ((otherarray[v].discount != "") && (otherarray[v].freeShipping != "")) {
+
+                                    str1other =
+                                        `
                                 <div class="discountAndFreeShippingWrap">
                                         <div class="discount">
-                                            ${myJson[v].discount}折
+                                            ${otherarray[v].discount}折
                                         </div>
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${otherarray[v].freeShipping}
                                         </div>
                             </div>
                             `;
-                            }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+                                }
+                                else if ((otherarray[v].discount != "") && (otherarray[v].freeShipping == "")) {
 
-                                str1other =
-                                    `
+                                    str1other =
+                                        `
                             <div class="discountAndFreeShippingWrap">
                             <div class="discount">
-                            ${myJson[v].discount}折
+                            ${otherarray[v].discount}折
                             </div>
                                         
                             </div>
                             `;
 
-                            }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+                                }
+                                else if ((otherarray[v].discount == "") && (otherarray[v].freeShipping != "")) {
 
-                                str1other =
-                                    `
+                                    str1other =
+                                        `
                             <div class="discountAndFreeShippingWrap">
                                         <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
+                                            ${otherarray[v].freeShipping}
                                         </div>
                                         
                             </div>
                             `;
-                            }
-                            else {
+                                }
+                                else {
 
-                                str1other = ""
-                            }
+                                    str1other = ""
+                                }
 
-                            let str2other = "";
-                            if (myJson[v].discount != "") {
-                                str2other =
-                                    `
+                                let str2other = "";
+                                if (otherarray[v].discount != "") {
+                                    str2other =
+                                        `
                                 <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].discountPrice}
+                                        ${otherarray[v].discountPrice}
                                     </div>
                                     <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
+                                        ${otherarray[v].originalPrice}
                                     </div>
                                 </div>
                             `;
-                            }
-                            else {
-                                str2other =
-                                    `
+                                }
+                                else {
+                                    str2other =
+                                        `
                             <div class="priceProduct">
                                     <div class="onsale">
-                                        ${myJson[v].originalPrice}
+                                        ${otherarray[v].originalPrice}
                                     </div>
 
                                 </div>
                             `;
-                            }
+                                }
 
-                            productCard.innerHTML =
+                                productCard.innerHTML =
 
-                                `<div class="pictureWrap">
+                                    `<div class="pictureWrap">
                                     ${str1other}
                                     <div class="otherPicWrap">
                                         <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
+                                            src="./img/${otherarray[v].productPic1}.jpg"
                                             alt="" loading="lazy" style="">
                                     </div>
                                     <div class="favorite">
@@ -1993,13 +2031,13 @@
                                     </div>
                                 </div>
                                 <div class="productName">
-                                    <p>${myJson[v].productName}</p>
+                                    <p>${otherarray[v].productName}</p>
                                 </div>
                                 <div class="productDetail">
                                     <div class="store">
                                         <div class="storeWrap d-flex">
                                         <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
+                                            ${otherarray[v].brandName}</div>
                                         </div>
                                        ${str2other}
                                         <!-- <div class="addition">
@@ -2007,592 +2045,592 @@
                                         </div> -->
                                     </div>
                                 </div>`;
-                            otherProductInStorePDPproductListWrap.append(productCard);
-
+                                myDOM.append(productCard);
+                            };
                         };
-
-
-                        for (let v = 0; v < 3; v++) {
-                            let recommendPDPproductListWrap = document.querySelector('.recommend .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${myJson[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${myJson[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (myJson[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${myJson[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            recommendPDPproductListWrap.append(productCard);
-
-                        };
-
-
-                        for (let v = 0; v < 3; v++) {
-                            let popularPDPproductListWrap = document.querySelector('.popular .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${myJson[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${myJson[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (myJson[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${myJson[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            popularPDPproductListWrap.append(productCard);
-
-                        };
-
-                        for (let v = 0; v < 3; v++) {
-                            let similarPDPproductListWrap = document.querySelector('.similar .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-4');
-
-
-                            let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${myJson[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${myJson[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (myJson[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="otherPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${myJson[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            similarPDPproductListWrap.append(productCard);
-
-                        };
-
-                        for (let v = 0; v < 12; v++) {
-                            let goodDesignPDPproductListWrap = document.querySelector('.goodDesign .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-2');
-
-
-                            let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${myJson[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${myJson[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (myJson[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="bottomPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${myJson[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            goodDesignPDPproductListWrap.append(productCard);
-
-                        };
-
-
-                        for (let v = 0; v < 12; v++) {
-
-                            let mayLikePDPproductListWrap = document.querySelector('.mayLike .PDPproductListWrap');
-
-                            let productCard = document.createElement('div');
-                            productCard.classList.add('productCard');
-                            productCard.classList.add('col-2');
-
-
-                            let str1other = "";
-                            if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                                <div class="discountAndFreeShippingWrap">
-                                        <div class="discount">
-                                            ${myJson[v].discount}折
-                                        </div>
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                            </div>
-                            `;
-                            }
-                            else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                            <div class="discount">
-                            ${myJson[v].discount}折
-                            </div>
-                                        
-                            </div>
-                            `;
-
-                            }
-                            else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
-
-                                str1other =
-                                    `
-                            <div class="discountAndFreeShippingWrap">
-                                        <div class="freeShipping">
-                                            ${myJson[v].freeShipping}
-                                        </div>
-                                        
-                            </div>
-                            `;
-                            }
-                            else {
-
-                                str1other = ""
-                            }
-
-                            let str2other = "";
-                            if (myJson[v].discount != "") {
-                                str2other =
-                                    `
-                                <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].discountPrice}
-                                    </div>
-                                    <div class="originalPrice">NT$
-                                        ${myJson[v].originalPrice}
-                                    </div>
-                                </div>
-                            `;
-                            }
-                            else {
-                                str2other =
-                                    `
-                            <div class="priceProduct">
-                                    <div class="onsale">
-                                        ${myJson[v].originalPrice}
-                                    </div>
-
-                                </div>
-                            `;
-                            }
-
-                            productCard.innerHTML =
-
-                                `<div class="pictureWrap">
-                                    ${str1other}
-                                    <div class="bottomPicWrap">
-                                        <img class="img g-lazy-fadein"
-                                            src="./img/${myJson[v].productPic1}.jpg"
-                                            alt="" loading="lazy" style="">
-                                    </div>
-                                    <div class="favorite">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="productName">
-                                    <p>${myJson[v].productName}</p>
-                                </div>
-                                <div class="productDetail">
-                                    <div class="store">
-                                        <div class="storeWrap d-flex">
-                                        <div class="storeLink">
-                                            ${myJson[v].brandName}</div>
-                                        </div>
-                                       ${str2other}
-                                        <!-- <div class="addition">
-                                            <p>可客製</p>
-                                        </div> -->
-                                    </div>
-                                </div>`;
-                            mayLikePDPproductListWrap.append(productCard);
-                        };
+                        // b = shuffle(a);
+
+                        // for (let v = 0; v < 3; v++) {
+                        //     let recommendPDPproductListWrap = document.querySelector('.recommend .PDPproductListWrap');
+
+                        //     let productCard = document.createElement('div');
+                        //     productCard.classList.add('productCard');
+                        //     productCard.classList.add('col-4');
+
+
+                        //     let str1other = "";
+                        //     if ((b[v].discount != "") && (b[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //         <div class="discountAndFreeShippingWrap">
+                        //                 <div class="discount">
+                        //                     ${b[v].discount}折
+                        //                 </div>
+                        //                 <div class="freeShipping">
+                        //                     ${b[v].freeShipping}
+                        //                 </div>
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else if ((b[v].discount != "") && (b[v].freeShipping == "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //     <div class="discount">
+                        //     ${b[v].discount}折
+                        //     </div>
+
+                        //     </div>
+                        //     `;
+
+                        //     }
+                        //     else if ((b[v].discount == "") && (b[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //                 <div class="freeShipping">
+                        //                     ${b[v].freeShipping}
+                        //                 </div>
+
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else {
+
+                        //         str1other = ""
+                        //     }
+
+                        //     let str2other = "";
+                        //     if (b[v].discount != "") {
+                        //         str2other =
+                        //             `
+                        //         <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${b[v].discountPrice}
+                        //             </div>
+                        //             <div class="originalPrice">NT$
+                        //                 ${b[v].originalPrice}
+                        //             </div>
+                        //         </div>
+                        //     `;
+                        //     }
+                        //     else {
+                        //         str2other =
+                        //             `
+                        //     <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${b[v].originalPrice}
+                        //             </div>
+
+                        //         </div>
+                        //     `;
+                        //     }
+
+                        //     productCard.innerHTML =
+
+                        //         `<div class="pictureWrap">
+                        //             ${str1other}
+                        //             <div class="otherPicWrap">
+                        //                 <img class="img g-lazy-fadein"
+                        //                     src="./img/${b[v].productPic1}.jpg"
+                        //                     alt="" loading="lazy" style="">
+                        //             </div>
+                        //             <div class="favorite">
+                        //                 <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                        //                     xmlns="http://www.w3.org/2000/svg">
+                        //                     <path
+                        //                         d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                        //                     </path>
+                        //                 </svg>
+                        //             </div>
+                        //         </div>
+                        //         <div class="productName">
+                        //             <p>${b[v].productName}</p>
+                        //         </div>
+                        //         <div class="productDetail">
+                        //             <div class="store">
+                        //                 <div class="storeWrap d-flex">
+                        //                 <div class="storeLink">
+                        //                     ${b[v].brandName}</div>
+                        //                 </div>
+                        //                ${str2other}
+                        //                 <!-- <div class="addition">
+                        //                     <p>可客製</p>
+                        //                 </div> -->
+                        //             </div>
+                        //         </div>`;
+                        //     recommendPDPproductListWrap.append(productCard);
+
+                        // };
+
+
+                        // for (let v = 0; v < 3; v++) {
+                        //     let popularPDPproductListWrap = document.querySelector('.popular .PDPproductListWrap');
+
+                        //     let productCard = document.createElement('div');
+                        //     productCard.classList.add('productCard');
+                        //     productCard.classList.add('col-4');
+
+
+                        //     let str1other = "";
+                        //     if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //         <div class="discountAndFreeShippingWrap">
+                        //                 <div class="discount">
+                        //                     ${myJson[v].discount}折
+                        //                 </div>
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //     <div class="discount">
+                        //     ${myJson[v].discount}折
+                        //     </div>
+
+                        //     </div>
+                        //     `;
+
+                        //     }
+                        //     else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else {
+
+                        //         str1other = ""
+                        //     }
+
+                        //     let str2other = "";
+                        //     if (myJson[v].discount != "") {
+                        //         str2other =
+                        //             `
+                        //         <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].discountPrice}
+                        //             </div>
+                        //             <div class="originalPrice">NT$
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+                        //         </div>
+                        //     `;
+                        //     }
+                        //     else {
+                        //         str2other =
+                        //             `
+                        //     <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+
+                        //         </div>
+                        //     `;
+                        //     }
+
+                        //     productCard.innerHTML =
+
+                        //         `<div class="pictureWrap">
+                        //             ${str1other}
+                        //             <div class="otherPicWrap">
+                        //                 <img class="img g-lazy-fadein"
+                        //                     src="./img/${myJson[v].productPic1}.jpg"
+                        //                     alt="" loading="lazy" style="">
+                        //             </div>
+                        //             <div class="favorite">
+                        //                 <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                        //                     xmlns="http://www.w3.org/2000/svg">
+                        //                     <path
+                        //                         d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                        //                     </path>
+                        //                 </svg>
+                        //             </div>
+                        //         </div>
+                        //         <div class="productName">
+                        //             <p>${myJson[v].productName}</p>
+                        //         </div>
+                        //         <div class="productDetail">
+                        //             <div class="store">
+                        //                 <div class="storeWrap d-flex">
+                        //                 <div class="storeLink">
+                        //                     ${myJson[v].brandName}</div>
+                        //                 </div>
+                        //                ${str2other}
+                        //                 <!-- <div class="addition">
+                        //                     <p>可客製</p>
+                        //                 </div> -->
+                        //             </div>
+                        //         </div>`;
+                        //     popularPDPproductListWrap.append(productCard);
+
+                        // };
+
+                        // for (let v = 0; v < 3; v++) {
+                        //     let similarPDPproductListWrap = document.querySelector('.similar .PDPproductListWrap');
+
+                        //     let productCard = document.createElement('div');
+                        //     productCard.classList.add('productCard');
+                        //     productCard.classList.add('col-4');
+
+
+                        //     let str1other = "";
+                        //     if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //         <div class="discountAndFreeShippingWrap">
+                        //                 <div class="discount">
+                        //                     ${myJson[v].discount}折
+                        //                 </div>
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //     <div class="discount">
+                        //     ${myJson[v].discount}折
+                        //     </div>
+
+                        //     </div>
+                        //     `;
+
+                        //     }
+                        //     else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else {
+
+                        //         str1other = ""
+                        //     }
+
+                        //     let str2other = "";
+                        //     if (myJson[v].discount != "") {
+                        //         str2other =
+                        //             `
+                        //         <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].discountPrice}
+                        //             </div>
+                        //             <div class="originalPrice">NT$
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+                        //         </div>
+                        //     `;
+                        //     }
+                        //     else {
+                        //         str2other =
+                        //             `
+                        //     <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+
+                        //         </div>
+                        //     `;
+                        //     }
+
+                        //     productCard.innerHTML =
+
+                        //         `<div class="pictureWrap">
+                        //             ${str1other}
+                        //             <div class="otherPicWrap">
+                        //                 <img class="img g-lazy-fadein"
+                        //                     src="./img/${myJson[v].productPic1}.jpg"
+                        //                     alt="" loading="lazy" style="">
+                        //             </div>
+                        //             <div class="favorite">
+                        //                 <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                        //                     xmlns="http://www.w3.org/2000/svg">
+                        //                     <path
+                        //                         d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                        //                     </path>
+                        //                 </svg>
+                        //             </div>
+                        //         </div>
+                        //         <div class="productName">
+                        //             <p>${myJson[v].productName}</p>
+                        //         </div>
+                        //         <div class="productDetail">
+                        //             <div class="store">
+                        //                 <div class="storeWrap d-flex">
+                        //                 <div class="storeLink">
+                        //                     ${myJson[v].brandName}</div>
+                        //                 </div>
+                        //                ${str2other}
+                        //                 <!-- <div class="addition">
+                        //                     <p>可客製</p>
+                        //                 </div> -->
+                        //             </div>
+                        //         </div>`;
+                        //     similarPDPproductListWrap.append(productCard);
+
+                        // };
+
+                        // for (let v = 0; v < 12; v++) {
+                        //     let goodDesignPDPproductListWrap = document.querySelector('.goodDesign .PDPproductListWrap');
+
+                        //     let productCard = document.createElement('div');
+                        //     productCard.classList.add('productCard');
+                        //     productCard.classList.add('col-2');
+
+
+                        //     let str1other = "";
+                        //     if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //         <div class="discountAndFreeShippingWrap">
+                        //                 <div class="discount">
+                        //                     ${myJson[v].discount}折
+                        //                 </div>
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //     <div class="discount">
+                        //     ${myJson[v].discount}折
+                        //     </div>
+
+                        //     </div>
+                        //     `;
+
+                        //     }
+                        //     else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else {
+
+                        //         str1other = ""
+                        //     }
+
+                        //     let str2other = "";
+                        //     if (myJson[v].discount != "") {
+                        //         str2other =
+                        //             `
+                        //         <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].discountPrice}
+                        //             </div>
+                        //             <div class="originalPrice">NT$
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+                        //         </div>
+                        //     `;
+                        //     }
+                        //     else {
+                        //         str2other =
+                        //             `
+                        //     <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+
+                        //         </div>
+                        //     `;
+                        //     }
+
+                        //     productCard.innerHTML =
+
+                        //         `<div class="pictureWrap">
+                        //             ${str1other}
+                        //             <div class="bottomPicWrap">
+                        //                 <img class="img g-lazy-fadein"
+                        //                     src="./img/${myJson[v].productPic1}.jpg"
+                        //                     alt="" loading="lazy" style="">
+                        //             </div>
+                        //             <div class="favorite">
+                        //                 <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                        //                     xmlns="http://www.w3.org/2000/svg">
+                        //                     <path
+                        //                         d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                        //                     </path>
+                        //                 </svg>
+                        //             </div>
+                        //         </div>
+                        //         <div class="productName">
+                        //             <p>${myJson[v].productName}</p>
+                        //         </div>
+                        //         <div class="productDetail">
+                        //             <div class="store">
+                        //                 <div class="storeWrap d-flex">
+                        //                 <div class="storeLink">
+                        //                     ${myJson[v].brandName}</div>
+                        //                 </div>
+                        //                ${str2other}
+                        //                 <!-- <div class="addition">
+                        //                     <p>可客製</p>
+                        //                 </div> -->
+                        //             </div>
+                        //         </div>`;
+                        //     goodDesignPDPproductListWrap.append(productCard);
+
+                        // };
+
+
+                        // for (let v = 0; v < 12; v++) {
+
+                        //     let mayLikePDPproductListWrap = document.querySelector('.mayLike .PDPproductListWrap');
+
+                        //     let productCard = document.createElement('div');
+                        //     productCard.classList.add('productCard');
+                        //     productCard.classList.add('col-2');
+
+
+                        //     let str1other = "";
+                        //     if ((myJson[v].discount != "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //         <div class="discountAndFreeShippingWrap">
+                        //                 <div class="discount">
+                        //                     ${myJson[v].discount}折
+                        //                 </div>
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else if ((myJson[v].discount != "") && (myJson[v].freeShipping == "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //     <div class="discount">
+                        //     ${myJson[v].discount}折
+                        //     </div>
+
+                        //     </div>
+                        //     `;
+
+                        //     }
+                        //     else if ((myJson[v].discount == "") && (myJson[v].freeShipping != "")) {
+
+                        //         str1other =
+                        //             `
+                        //     <div class="discountAndFreeShippingWrap">
+                        //                 <div class="freeShipping">
+                        //                     ${myJson[v].freeShipping}
+                        //                 </div>
+
+                        //     </div>
+                        //     `;
+                        //     }
+                        //     else {
+
+                        //         str1other = ""
+                        //     }
+
+                        //     let str2other = "";
+                        //     if (myJson[v].discount != "") {
+                        //         str2other =
+                        //             `
+                        //         <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].discountPrice}
+                        //             </div>
+                        //             <div class="originalPrice">NT$
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+                        //         </div>
+                        //     `;
+                        //     }
+                        //     else {
+                        //         str2other =
+                        //             `
+                        //     <div class="priceProduct">
+                        //             <div class="onsale">
+                        //                 ${myJson[v].originalPrice}
+                        //             </div>
+
+                        //         </div>
+                        //     `;
+                        //     }
+
+                        //     productCard.innerHTML =
+
+                        //         `<div class="pictureWrap">
+                        //             ${str1other}
+                        //             <div class="bottomPicWrap">
+                        //                 <img class="img g-lazy-fadein"
+                        //                     src="./img/${myJson[v].productPic1}.jpg"
+                        //                     alt="" loading="lazy" style="">
+                        //             </div>
+                        //             <div class="favorite">
+                        //                 <svg width="24" height="24" viewBox="0 0 24 24" class="icon--heart-solid"
+                        //                     xmlns="http://www.w3.org/2000/svg">
+                        //                     <path
+                        //                         d="M7.374 4.75a4.008 4.008 0 0 0-2.75 1.059c-1.464 1.364-1.565 3.737-.247 5.77 1.808 2.436 6.172 6.211 7.623 7.442 1.451-1.231 5.819-5.013 7.648-7.48 1.292-1.996 1.191-4.369-.272-5.731a4.007 4.007 0 0 0-2.75-1.06 4.18 4.18 0 0 0-2.357.713c-1.23.846-1.451 1.933-1.534 2.343a.75.75 0 0 1-.734.6H12a.748.748 0 0 1-.734-.599 3.543 3.543 0 0 0-1.535-2.344 4.182 4.182 0 0 0-2.357-.713">
+                        //                     </path>
+                        //                 </svg>
+                        //             </div>
+                        //         </div>
+                        //         <div class="productName">
+                        //             <p>${myJson[v].productName}</p>
+                        //         </div>
+                        //         <div class="productDetail">
+                        //             <div class="store">
+                        //                 <div class="storeWrap d-flex">
+                        //                 <div class="storeLink">
+                        //                     ${myJson[v].brandName}</div>
+                        //                 </div>
+                        //                ${str2other}
+                        //                 <!-- <div class="addition">
+                        //                     <p>可客製</p>
+                        //                 </div> -->
+                        //             </div>
+                        //         </div>`;
+                        //     mayLikePDPproductListWrap.append(productCard);
+                        // };
 
                     });
 
