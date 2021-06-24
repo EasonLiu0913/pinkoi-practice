@@ -1729,6 +1729,7 @@
             </div>
             <script src="./jquery-3.6.0.js"></script>
             <script>
+                // Q：productList頁面連過來之後，productNumber變數要怎麼改?
                 let productNumber = '0018';
                 fetch(`./PINKOI.productDetails_api.php?productNumber=${productNumber}`)
                     .then(function (response) {
@@ -1748,7 +1749,7 @@
                             `
                             ;
 
-                        //Q:以下成功跑出6張圖片，但是要如何讓他每一個圖片自動抓到productPic1、productPic2、productPic3、productPic4、productPic5、productPic6的欄位資料? 
+
                         for (let s = 0; s < 6; s++) {
 
                             if (myJson['productPic' + (s + 1)] === '') break;
@@ -1764,7 +1765,7 @@
                             smallpicWrap.append(smallpic);
                         };
 
-                        // Q:商品簡介的內容，我先把introRule欄位中的字串變成陣列ex:[t,i,i](不知道對不對?)，然後不知道要怎麼叫出productDetail1、productDetail2、productDetail3.....的欄位資料，並結合判斷introRule的陣列內的質，給不同的格式
+
                         let introRule = myJson.introRule;
                         console.log(myJson.introRule)
                         let rulearray = introRule.split(',');
@@ -1899,7 +1900,7 @@
 
 
 
-                        // Q:資料要洗牌，但是洗牌，但是不知道要怎麼寫
+
                         function shuffle(array) {
                             var currentIndex = array.length, randomIndex;
                             while (0 !== currentIndex) {
